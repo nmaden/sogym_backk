@@ -1,0 +1,88 @@
+POST http://127.0.0.1:8000/api/v1/user/me
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZTdjMGI5YzAwNjIxMTVkNDUxZDQ1MDE1YTk3MTc1OWQ1N2I5NTNjYjU0OWM4OWQwNTJkNzE0NDlhOTg1NGIyNTg0Njk5NjRhNmQ2MDA3YzQiLCJpYXQiOjE2MTQ1MDc1MjYsIm5iZiI6MTYxNDUwNzUyNiwiZXhwIjoxNjMwMTQ1OTI1LCJzdWIiOiIxOSIsInNjb3BlcyI6W119.AaueLpkNWOyMeC15VU2iRznZ1gpniBuwYR009F23KPTzsyLRqXl1wEBCqXDBYj6odb8gqxbglOCwWfAlmO1bKe0caZA9VZKJeUdA_s5UG7Sp84ccAnnItVVGvCPxh1jSAITigBTCxw8iJE75iGahAJsnVsFz8ne3SZnpmgDS6XN-S90-oyGK8afFRsOu6F6D5goBEwD_IPK61G--4WFBZgfbZLvZjk6zbcUFE1Kqo4P5FcnvEdCNuJumaTUkvoq8tO3jW6QeJLiH__K29fr8CxK5HkRFThwCXlImQ74A9t34X2wBoGo5gV2VGIH61DCiMVgV8iDLE_EjaiAGWLP8naxCAwWTM4WffFRZctAc5tTxYhTsVnIAv9FfN5ure_jDGV2I5-D3HK3D-18RYo2Bqfx5T1A1NeVNZ17G_MLFy9s4aobWa62Xuqg-2iSiFFFH8RN_Ot9DmQrbvkG8Zz-Do6UswmBXmgKq3veI490Tb57Wj9WD9PXoaVUmc7Kwgh3EZNrVsrDkv3E-CKFdnDeVzZsOGfdnXq2i5rWctZkZin9xJsNA7w9KUmpXxo--QnPg8DFthdpGrkslkBr5wyQqd1a3eCdqkVm4d39aHlIydC1vQyiynfPCV7J8FNfc44PDHoyP0aop7MyIpf2LcQ7hbEA3CtS2IQ-S_fUN6_L9OJY
+
+{
+
+}
+###
+POST  http://127.0.0.1:8000/api/v1/create/purchase
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiM2Q4NWNhYThmZGQ4MjRjMjZlYjFjYzU4MTEwMTcyYjYyOWMyMzEyYzA1NWM1ZThjMTNhZTQyMmYzYjQ3YzI5ZDMwOGM2NTJhMWY4NDdhYjUiLCJpYXQiOiIxNjE1NDU5NTkzLjg5Mzk4OCIsIm5iZiI6IjE2MTU0NTk1OTMuODkzOTk3IiwiZXhwIjoiMTY0Njk5NTU5My44OTAzNDAiLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.f7Bg90IFmlr5SLU9vbLiOJjnzCKo5uvPtAD12_kNqOgNDjW-qgVk00Fey_o8ffqPPHp5qjpabvjAS853HqXUvhfIe8mgjI5Z3oYlJcmTsNyvKE3Em2A9u1ab3XaWApwvya0Sz6qYBpTo2Ak1nzAc3fwy4sDHZnXOOpgP4c5FFPMHxY290yF9EmhuJNY8_ulwE_WjEuoC8t641chz6vfuNpYdbFdGUzchx9elxaE5xQsJcd1_s07yclUnp_NZrVjtW2cPsq-ZhEcmn2w-X1Kk1WGFVLBHkNQOUtUbHUXl9XOmpkO-5Aw_ZhKcFz3I6w4oGVZqPUM6s9FUptB-D1ERYpE4uMwDYFFOJ6ey-LGGsKVfMFd9D49-N_9BQV-wt3h3HcnTUGks4FkSKAZ6-BV6D44Xr2cp2nhCuo-sqrikYK_qsfrexMuFMPVx7_IwWwUc7SG7JBu_iVss4BQ0TCj6c3OJ68UdZ5JAALa4hU_XpJYwQl_wWIchtknJ1xpd_j83G-MvJ4v_0nupboJju-b0rUkE3Q73Fq-1PcDocqhWzkcoNRYZb5PzaQiGi2IxSPjxe8EW2T8u-NY6ixpwJPljnoNVNSS6Q5XcUbTDLsN6-u_iQyY5RKZ3fm8xfUdpL51z17aQxJoNjRQ6ZyZGZeHqsOZT3kFIPMcB910pweQ55_o
+
+
+{   
+    "title": "first",
+    "decription": "AAAA",
+    "number_purchase": 1,
+    "category_id": 1
+}
+###
+GET  http://127.0.0.1:8000/api/v1/get/purchase
+Content-Type: application/json
+
+{   
+    "id": 1
+}
+
+###
+GET  http://127.0.0.1:8000/api/v1/get/purchases
+Content-Type: application/json
+
+{   
+
+}
+###
+POST  http://127.0.0.1:8000/api/v1/update/purchase
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiM2Q4NWNhYThmZGQ4MjRjMjZlYjFjYzU4MTEwMTcyYjYyOWMyMzEyYzA1NWM1ZThjMTNhZTQyMmYzYjQ3YzI5ZDMwOGM2NTJhMWY4NDdhYjUiLCJpYXQiOiIxNjE1NDU5NTkzLjg5Mzk4OCIsIm5iZiI6IjE2MTU0NTk1OTMuODkzOTk3IiwiZXhwIjoiMTY0Njk5NTU5My44OTAzNDAiLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.f7Bg90IFmlr5SLU9vbLiOJjnzCKo5uvPtAD12_kNqOgNDjW-qgVk00Fey_o8ffqPPHp5qjpabvjAS853HqXUvhfIe8mgjI5Z3oYlJcmTsNyvKE3Em2A9u1ab3XaWApwvya0Sz6qYBpTo2Ak1nzAc3fwy4sDHZnXOOpgP4c5FFPMHxY290yF9EmhuJNY8_ulwE_WjEuoC8t641chz6vfuNpYdbFdGUzchx9elxaE5xQsJcd1_s07yclUnp_NZrVjtW2cPsq-ZhEcmn2w-X1Kk1WGFVLBHkNQOUtUbHUXl9XOmpkO-5Aw_ZhKcFz3I6w4oGVZqPUM6s9FUptB-D1ERYpE4uMwDYFFOJ6ey-LGGsKVfMFd9D49-N_9BQV-wt3h3HcnTUGks4FkSKAZ6-BV6D44Xr2cp2nhCuo-sqrikYK_qsfrexMuFMPVx7_IwWwUc7SG7JBu_iVss4BQ0TCj6c3OJ68UdZ5JAALa4hU_XpJYwQl_wWIchtknJ1xpd_j83G-MvJ4v_0nupboJju-b0rUkE3Q73Fq-1PcDocqhWzkcoNRYZb5PzaQiGi2IxSPjxe8EW2T8u-NY6ixpwJPljnoNVNSS6Q5XcUbTDLsN6-u_iQyY5RKZ3fm8xfUdpL51z17aQxJoNjRQ6ZyZGZeHqsOZT3kFIPMcB910pweQ55_o
+
+{   
+    "id": 1,
+    "first": "second",
+    "category_id": 1
+}
+
+###
+POST  http://127.0.0.1:8000/api/v1/create/category
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiM2Q4NWNhYThmZGQ4MjRjMjZlYjFjYzU4MTEwMTcyYjYyOWMyMzEyYzA1NWM1ZThjMTNhZTQyMmYzYjQ3YzI5ZDMwOGM2NTJhMWY4NDdhYjUiLCJpYXQiOiIxNjE1NDU5NTkzLjg5Mzk4OCIsIm5iZiI6IjE2MTU0NTk1OTMuODkzOTk3IiwiZXhwIjoiMTY0Njk5NTU5My44OTAzNDAiLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.f7Bg90IFmlr5SLU9vbLiOJjnzCKo5uvPtAD12_kNqOgNDjW-qgVk00Fey_o8ffqPPHp5qjpabvjAS853HqXUvhfIe8mgjI5Z3oYlJcmTsNyvKE3Em2A9u1ab3XaWApwvya0Sz6qYBpTo2Ak1nzAc3fwy4sDHZnXOOpgP4c5FFPMHxY290yF9EmhuJNY8_ulwE_WjEuoC8t641chz6vfuNpYdbFdGUzchx9elxaE5xQsJcd1_s07yclUnp_NZrVjtW2cPsq-ZhEcmn2w-X1Kk1WGFVLBHkNQOUtUbHUXl9XOmpkO-5Aw_ZhKcFz3I6w4oGVZqPUM6s9FUptB-D1ERYpE4uMwDYFFOJ6ey-LGGsKVfMFd9D49-N_9BQV-wt3h3HcnTUGks4FkSKAZ6-BV6D44Xr2cp2nhCuo-sqrikYK_qsfrexMuFMPVx7_IwWwUc7SG7JBu_iVss4BQ0TCj6c3OJ68UdZ5JAALa4hU_XpJYwQl_wWIchtknJ1xpd_j83G-MvJ4v_0nupboJju-b0rUkE3Q73Fq-1PcDocqhWzkcoNRYZb5PzaQiGi2IxSPjxe8EW2T8u-NY6ixpwJPljnoNVNSS6Q5XcUbTDLsN6-u_iQyY5RKZ3fm8xfUdpL51z17aQxJoNjRQ6ZyZGZeHqsOZT3kFIPMcB910pweQ55_o
+
+{   
+    "name": "Закупки лекарственных средств"
+}
+
+###
+POST  http://127.0.0.1:8000/api/v1/create/application
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiM2Q4NWNhYThmZGQ4MjRjMjZlYjFjYzU4MTEwMTcyYjYyOWMyMzEyYzA1NWM1ZThjMTNhZTQyMmYzYjQ3YzI5ZDMwOGM2NTJhMWY4NDdhYjUiLCJpYXQiOiIxNjE1NDU5NTkzLjg5Mzk4OCIsIm5iZiI6IjE2MTU0NTk1OTMuODkzOTk3IiwiZXhwIjoiMTY0Njk5NTU5My44OTAzNDAiLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.f7Bg90IFmlr5SLU9vbLiOJjnzCKo5uvPtAD12_kNqOgNDjW-qgVk00Fey_o8ffqPPHp5qjpabvjAS853HqXUvhfIe8mgjI5Z3oYlJcmTsNyvKE3Em2A9u1ab3XaWApwvya0Sz6qYBpTo2Ak1nzAc3fwy4sDHZnXOOpgP4c5FFPMHxY290yF9EmhuJNY8_ulwE_WjEuoC8t641chz6vfuNpYdbFdGUzchx9elxaE5xQsJcd1_s07yclUnp_NZrVjtW2cPsq-ZhEcmn2w-X1Kk1WGFVLBHkNQOUtUbHUXl9XOmpkO-5Aw_ZhKcFz3I6w4oGVZqPUM6s9FUptB-D1ERYpE4uMwDYFFOJ6ey-LGGsKVfMFd9D49-N_9BQV-wt3h3HcnTUGks4FkSKAZ6-BV6D44Xr2cp2nhCuo-sqrikYK_qsfrexMuFMPVx7_IwWwUc7SG7JBu_iVss4BQ0TCj6c3OJ68UdZ5JAALa4hU_XpJYwQl_wWIchtknJ1xpd_j83G-MvJ4v_0nupboJju-b0rUkE3Q73Fq-1PcDocqhWzkcoNRYZb5PzaQiGi2IxSPjxe8EW2T8u-NY6ixpwJPljnoNVNSS6Q5XcUbTDLsN6-u_iQyY5RKZ3fm8xfUdpL51z17aQxJoNjRQ6ZyZGZeHqsOZT3kFIPMcB910pweQ55_o
+
+{   
+    "purcase_id": 1,
+    "name": "first",
+    "bin": "1223",
+    "address": "",
+    "phone": "1111",
+    "email": "nurbolmaden@gmail.com"
+}
+
+
+###
+POST  http://127.0.0.1:8000/api/v1/guest/register
+Content-Type: application/json
+
+{   
+    "name": "Администратор системы",
+    "email": "green-clinic@admin.kz",
+    "password": "greenclinic123"
+}
+
+
+###
+POST  http://127.0.0.1:8000/api/v1/login
+Content-Type: application/json
+
+{   
+    "email": "green-clinic@admin.kz",
+    "password": "greenclinic123"
+}
