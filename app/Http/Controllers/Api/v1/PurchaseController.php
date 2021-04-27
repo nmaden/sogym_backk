@@ -188,6 +188,20 @@ class PurchaseController extends Controller
         
         return response()->json(['message' => "Успешно удален"], 200);
 	}
+    public function sendRequest(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required',
+            'name' => 'required',
+        ]);
+        $templateData = [
+            'msg' => "Поступило новая заявка от ".$request->name.' '.$request->phone
+        ];
+        Mail::send('message',$templateData, function ($message) use ($request) {
+            $message->from('green-clinic@admin.kz');
+            $message->to('info@greenclinic.kz')->subject('green-clinic.kz');
+        });
+        return response()->json(['message' => "Успешно сохранен"], 200);
+    }
     public function createApplication(Request $request) 
 	{
         $validator = Validator::make($request->all(), [
@@ -221,6 +235,14 @@ class PurchaseController extends Controller
             $application->link_file = '/' . $path . $file;
         }
         $application->save();
+
+        $templateData = [
+            'msg' => "Поступило новая заявка от ".$request->name.' на закуп '.$purchase->title,
+        ];
+        Mail::send('message',$templateData, function ($message) use ($application) {
+            $message->from('green-clinic@admin.kz');
+            $message->to('info@greenclinic.kz')->subject('green-clinic.kz');
+        });
         return response()->json(['message' => "Успешно сохранен"], 200);
 	}
 

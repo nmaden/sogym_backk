@@ -33,6 +33,7 @@ Route::prefix('v1')->group(function () {
                 
     });
 
+    Route::post('/send/request', 'Api\v1\PurchaseController@sendRequest');
 
     Route::post('/create/application', 'Api\v1\PurchaseController@createApplication');
     Route::get('/get/by/category', 'Api\v1\PurchaseController@getPurchasesByCategory');
