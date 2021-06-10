@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Application extends Model
+class ProductImage extends Model
 {
-    protected $table = 'application';
+    protected $table = 'product_images';
+
 }

@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Spatie\Activitylog\Traits\LogsActivity;
 use App\Models\Application;
-class Purchase extends Model
+class Product extends Model
 {
-    protected $table = 'purchases';
+    protected $table = 'product';
 
-    public function applications() {
-        return $this->hasMany(Application::class,'purcase_id','id');
+
+    public function images() {
+        return $this->hasMany(ProductImage::class,'product_id','id');
     }
+
 }
