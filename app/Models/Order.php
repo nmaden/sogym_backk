@@ -9,4 +9,5 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Order extends Model
 {
     protected $table = 'order';
+
 }

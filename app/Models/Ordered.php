@@ -9,4 +9,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Ordered extends Model
 {
     protected $table = 'ordered';
+
+    public function orders() {
+        return $this->hasMany(Order::class,'order_id','id');
+    }
 }

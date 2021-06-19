@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use File;
 use Illuminate\Support\Str;
 class ProductsController extends Controller
-{      
+{
     public function me(Request $request)
     {
         $user = User::where('id', Auth::id())
@@ -25,7 +25,7 @@ class ProductsController extends Controller
 
         return $user;
     }
-    public function searchProduct(Request $request) {    
+    public function searchProduct(Request $request) {
         $products =  Product::query()->with("images")->where("name", 'like', '%'.$request->name.'%')->paginate(6);
         return $products;
     }
@@ -36,13 +36,13 @@ class ProductsController extends Controller
         $category->save();
 
 
-        return response()->json(['message' => "Успешно удален"], 200);  
+        return response()->json(['message' => "Успешно удален"], 200);
     }
 
     public function deleteChildProduct($id) {
         $products = Product::query()->where("category_id",$id)->get();
 
-        for ($i=0; $i < count($products); $i++) { 
+        for ($i=0; $i < count($products); $i++) {
             $productImage = ProductImage::query()->where("product_id",$products[$i]->id)->delete();
         }
 
@@ -54,8 +54,8 @@ class ProductsController extends Controller
 
 
         if($childs) {
-            for ($i=0; $i < count($childs); $i++) { 
-                $this->deleteChildProduct($childs[$i]->id);  
+            for ($i=0; $i < count($childs); $i++) {
+                $this->deleteChildProduct($childs[$i]->id);
             }
         }
         $childs =  Categories::query()->where("p_id",$request->id)->delete();
@@ -63,13 +63,13 @@ class ProductsController extends Controller
 
         $products = Product::query()->where("category_id",$request->id)->get();
         if($products) {
-            for ($i=0; $i < count($products); $i++) { 
+            for ($i=0; $i < count($products); $i++) {
                 $productImage = ProductImage::query()->where("product_id",$products[$i]->id)->delete();
             }
         }
         $product = Product::query()->where("category_id",$request->id)->delete();
 
-        return response()->json(['message' => "Успешно удален"], 200);  
+        return response()->json(['message' => "Успешно удален"], 200);
     }
     public function getProductsAdminByCategory(Request $request) {
         $products =  Product::query()->with("images")->where("category_id",$request->category_id)->get();
@@ -84,9 +84,9 @@ class ProductsController extends Controller
         $category->p_id = $request->p_id;
 
         $category->save();
-        return response()->json(['message' => "Успешно сохранен"], 200);  
+        return response()->json(['message' => "Успешно сохранен"], 200);
     }
-    public function getCategories(Request $request) {  
+    public function getCategories(Request $request) {
        $categories =  Categories::query()->where("p_id",null)->with("children")->get();
 
        return json_encode($categories,JSON_UNESCAPED_UNICODE);
@@ -99,7 +99,7 @@ class ProductsController extends Controller
 
        $arr = [];
        $result = [];
-       for ($i=0; $i <count($categories); $i++) { 
+       for ($i=0; $i <count($categories); $i++) {
             array_push($result,$obj);
 
             $result[$i]["id"] = $categories[$i]->id;
@@ -109,11 +109,11 @@ class ProductsController extends Controller
             if($categories[$i]->level>0) {
                 $result[$i]["childs"] = $this->getChilds($categories[$i]->id,$categories[$i]->level,$arr);
             }
-            
+
        }
 
        return json_encode($result,JSON_UNESCAPED_UNICODE);
-    } 
+    }
 
     public function getChilds($id,$level,$result) {
 
@@ -126,19 +126,19 @@ class ProductsController extends Controller
             "p_id"=>''
         ];
         for ($i=0; $i <count($categories); $i++) {
-                if($level>=1) { 
+                if($level>=1) {
                     array_push($result,$obj);
                 }
-                
+
                 $result[$i]["id"] = $categories[$i]->id;
                 $result[$i]["name"] = $categories[$i]->name;
                 $result[$i]["p_id"] = $categories[$i]->p_id;
                 $level = $level-1;
                 if($level>=1) {
                     $result[$i]["childs"] = $this->getChilds($categories[$i]->id,$level,$result);
-                }     
+                }
         }
-        return $result;      
+        return $result;
     }
     public function deleteImage($image_path,$id) {
         if(file_exists(public_path($image_path))){
@@ -154,7 +154,7 @@ class ProductsController extends Controller
             $product_image = ProductImage::query()->where("id",$request->id)->delete();
         };
 
-        return response()->json(['message' => "Рисонок успешно удален"], 200);  
+        return response()->json(['message' => "Рисонок успешно удален"], 200);
     }
     public function updateProduct(Request $request) {
         $product = Product::query()->where("id",$request->id)->first();
@@ -177,7 +177,7 @@ class ProductsController extends Controller
         }
 
         $files = $request->file('images');
-       
+
         foreach($files as $file) {
             $product_image = new ProductImage();
             $extension = $file->getClientOriginalExtension();
@@ -188,11 +188,11 @@ class ProductsController extends Controller
             $product_image->image_path = '/' . $path . $b;
             $product_image->save();
         }
-   
-        return response()->json(['message' => "Успешно сохранен"], 200);  
+
+        return response()->json(['message' => "Успешно сохранен"], 200);
     }
     public function createProduct(Request $request) {
-        
+
         $product = new Product();
         $product->name = $request->name;
         $product->description = $request->description;
@@ -214,7 +214,7 @@ class ProductsController extends Controller
 
         $files = $request->file('images');
 
-       
+
         foreach($files as $file) {
             $product_image = new ProductImage();
 
@@ -222,12 +222,12 @@ class ProductsController extends Controller
             $path = 'storage/products/' . date('d') . '.' . date('m') . '.' . date('Y') . '/';
             $b = 'product-' . Str::random(20). '.' . $extension;
             $file->move($path, $b);
-            
+
             $product_image->product_id = $product->id;
             $product_image->image_path = '/' . $path . $b;
             $product_image->save();
         }
-   
+
         return response()->json(['message' => "Успешно сохранен"], 200);
     }
     public function editProduct(Request $request) {
@@ -247,22 +247,22 @@ class ProductsController extends Controller
     }
     public function getProductDescription(Request $request) {
         $description =  Product::query()->where("category_id",$request->category_id)->where("id",$request->product_id)->with("images")->first();
-        return $description;  
+        return $description;
     }
-    public function getProducts(Request $request) {    
+    public function getProducts(Request $request) {
         $products =  Product::query()->with("images")->paginate(6);
         return $products;
     }
-    public function getProductsByCategory(Request $request) {    
+    public function getProductsByCategory(Request $request) {
         $products =  Product::query()->with("images")->where("category_id",$request->category_id)->get();
         return $products;
     }
-    public function deleteProduct(Request $request) {    
+    public function deleteProduct(Request $request) {
         $product =  Product::query()->where("id",$request->id)->first();
         $product_images = ProductImage::where("product_id",$product->id)->get();
 
         if(count($product_images)!=0) {
-            for ($i=0; $i <count($product_images) ; $i++) { 
+            for ($i=0; $i <count($product_images) ; $i++) {
                 $this->deleteImage($product_images[$i]->image_path,$product_images[$i]->id);
             }
         }
@@ -270,15 +270,26 @@ class ProductsController extends Controller
         return response()->json(['message' => "Успешно удален"], 200);
     }
     public function createOrder(Request $request) {
-
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'phone_number' => 'required',
+            'delivery_type' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
 
         $ordered_main = new Ordered();
-        $ordered_main->info = $request->phone.' '.$request->email;
+        $ordered_main->info = $request->phone_number.' '.$request->address;
+        $ordered_main->name_user =$request->name;
+        $ordered_main->phone =$request->phone_number;
+        $ordered_main->address = $request->delivery_type==1?$request->address:'';
+        $ordered_main->delivery_type = $request->delivery_type;
         $ordered_main->save();
 
         $total_amount = 0;
 
-        for ($i=0; $i < count($request->orders); $i++) { 
+        for ($i=0; $i < count($request->orders); $i++) {
             $product = new Order();
             $product->order_id = $ordered_main->id;
             $product->name = $request->orders[$i]["name"];
@@ -288,11 +299,9 @@ class ProductsController extends Controller
             $product->size = $request->orders[$i]["size"];
             $product->category_id =$request->orders[$i]['category_id'];
             $product->payed = false;
-
             $total_amount = $total_amount+$request->orders[$i]["price"];
             $product->save();
         }
-    
 
         $payment_info = [
             "merchant_id"=>538709,
@@ -304,7 +313,7 @@ class ProductsController extends Controller
                 "failure_url"=>"https://frezerovka04.kz/"
             ]
         ];
-        
+
         $request = [
             'pg_merchant_id'=>$payment_info['merchant_id'],
             'pg_amount'=>$total_amount,
@@ -331,8 +340,10 @@ class ProductsController extends Controller
         return response()->json(['message' => 'Ваш заказ успешно создано'], 200);
     }
     public function getOrders(Request $request) {
-        $orders = Order::query()->orderBy("created_at","DESC")->get();
-        return $orders;
+//        $orders = Order::query()->orderBy("created_at","DESC")->get();
+
+        $ordered = Ordered::query()->with('orders')->orderBy("created_at","DESC")->get();
+        return $ordered;
     }
     public function getOrder(Request $request) {
         $orders = Order::query()->where("id",$request->id)->get();
