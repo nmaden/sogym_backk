@@ -287,6 +287,7 @@ class ProductsController extends Controller
         $ordered_main->delivery_type = $request->delivery_type;
         $ordered_main->save();
 
+        $this->send_message($request->name.' '.$request->address,$request->phone_number);
         $total_amount = 0;
 
         for ($i=0; $i < count($request->orders); $i++) {
@@ -339,6 +340,37 @@ class ProductsController extends Controller
         // return response()->json(['url' => 'https://api.paybox.money/payment.php?'.$query], 200);
         return response()->json(['message' => 'Ваш заказ успешно создано'], 200);
     }
+    public   function send_message($user,$phone) {
+
+        $message = 'Сегодня: '.date("Y-m-d").' Поступило новый заказ от ИНТЕРНЕТ МАГАЗИН '.$user.' - '.$phone;
+
+        $this->send_telegram(281900870,$message); // I
+        $this->send_telegram(719817594,$message); // Kenes
+        //   $this->send_telegram(891800093,$message); // Wamwi
+        //   $this->send_telegram(635324651,$message); // Menedjer
+    }
+    public function send_telegram($id,$message)
+    {
+
+        $token = '1760765822:AAFp-bXa3wiHbeVm2fi2eT1TCyUkU6SmrHU';
+        $chat_id = $id;
+
+        $url = "https://api.telegram.org/$token/sendMessage?chat_id=$chat_id&text=$message";
+
+        $ch = curl_init();
+
+        $optArray = array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true
+        );
+        curl_setopt_array($ch, $optArray);
+        $result = curl_exec($ch);
+
+        $err = curl_error($ch);
+        curl_close($ch);
+        return $result;
+    }
+
     public function getOrders(Request $request) {
 //        $orders = Order::query()->orderBy("created_at","DESC")->get();
 
