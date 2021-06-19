@@ -17,7 +17,14 @@ use File;
 use Illuminate\Support\Str;
 class ProductsController extends Controller
 {      
+    public function me(Request $request)
+    {
+        $user = User::where('id', Auth::id())
+            ->select('*')
+            ->first();
 
+        return $user;
+    }
     public function searchProduct(Request $request) {    
         $products =  Product::query()->with("images")->where("name", 'like', '%'.$request->name.'%')->paginate(6);
         return $products;

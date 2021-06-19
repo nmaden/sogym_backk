@@ -49,8 +49,14 @@ Route::prefix('v1')->group(function () {
             Route::post('/create/purchase', 'Api\v1\PurchaseController@createPurchase');
             Route::get('/get/applications', 'Api\v1\PurchaseController@getApplications');
             Route::post('/accept/application', 'Api\v1\PurchaseController@acceptApplication');  
-            Route::post('/get/user/me', 'Api\v1\PurchaseController@me');
-            // Route::get('/get/user/me', 'Api\v1\PurchaseController@me');            
+            
+            
+            Route::post('/get/user/me', 'Api\v1\ProductsController@me');
+
+
+            // Route::get('/get/user/me', 'Api\v1\ProductsController@me');
+            
+            
             Route::get('/get/purchase', 'Api\v1\PurchaseController@getPurchase');
             Route::get('/delete/purchase', 'Api\v1\PurchaseController@deletePurchase');
 
