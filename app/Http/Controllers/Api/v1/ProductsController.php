@@ -287,10 +287,10 @@ class ProductsController extends Controller
         $ordered_main->delivery_type = $request->delivery_type;
         $ordered_main->save();
 
-        $this->send_message($request->name.' '.$request->address,$request->phone_number);
         $total_amount = 0;
-
+        $order_text = '';
         for ($i=0; $i < count($request->orders); $i++) {
+            $order_text = $order_text.$request->orders[$i]["name"].' количество:'.$request->orders[$i]["order_count"].' - цена:'.$request->orders[$i]["price"].'тг';
             $product = new Order();
             $product->order_id = $ordered_main->id;
             $product->name = $request->orders[$i]["name"];
@@ -303,6 +303,9 @@ class ProductsController extends Controller
             $total_amount = $total_amount+$request->orders[$i]["price"];
             $product->save();
         }
+
+
+        $this->send_message($request->name.' '.$request->address.' | Заказано: '.$order_text,$request->phone_number);
 
         $payment_info = [
             "merchant_id"=>538709,
@@ -342,7 +345,7 @@ class ProductsController extends Controller
     }
     public   function send_message($user,$phone) {
 
-        $message = 'Сегодня: '.date("Y-m-d").' Поступило новый заказ от ИНТЕРНЕТ МАГАЗИН '.$user.' - '.$phone;
+        $message = 'Сегодня: '.date("Y-m-d").'ИНТЕРНЕТ МАГАЗИН Поступило новый заказ от заказщика '.$user.' - '.$phone;
 
         $this->send_telegram(281900870,$message); // I
         $this->send_telegram(719817594,$message); // Kenes
