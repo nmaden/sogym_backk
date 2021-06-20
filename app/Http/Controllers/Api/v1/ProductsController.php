@@ -348,7 +348,7 @@ class ProductsController extends Controller
         $message = 'Сегодня: '.date("Y-m-d").' ИНТЕРНЕТ МАГАЗИН Поступило новый заказ от заказщика '.$user.' - '.$phone;
 
         $this->send_telegram(281900870,$message); // I
-        $this->send_telegram(719817594,$message); // Kenes
+//        $this->send_telegram(719817594,$message); // Kenes
         //   $this->send_telegram(891800093,$message); // Wamwi
         //   $this->send_telegram(635324651,$message); // Menedjer
 
