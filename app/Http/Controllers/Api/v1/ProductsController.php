@@ -348,26 +348,15 @@ class ProductsController extends Controller
         $this->send_telegram(719817594,$message); // Kenes
         //   $this->send_telegram(891800093,$message); // Wamwi
         //   $this->send_telegram(635324651,$message); // Menedjer
+
     }
     public function send_telegram($id,$message)
     {
-
         $token = '1760765822:AAFp-bXa3wiHbeVm2fi2eT1TCyUkU6SmrHU';
-        $chat_id = $id;
-
-        $url = "https://api.telegram.org/$token/sendMessage?chat_id=$chat_id&text=$message";
-
-        $ch = curl_init();
-
-        $optArray = array(
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true
-        );
-        curl_setopt_array($ch, $optArray);
-        $result = curl_exec($ch);
-
-        $err = curl_error($ch);
-        curl_close($ch);
+        $url='https://api.telegram.org/bot'.$token.'/sendMessage';$data=array('chat_id'=>$id,'text'=>$message);
+        $options=array('http'=>array('method'=>'POST','header'=>"Content-Type:application/x-www-form-urlencoded\r\n",'content'=>http_build_query($data),),);
+        $context=stream_context_create($options);
+        $result=file_get_contents($url,false,$context);
         return $result;
     }
 
