@@ -167,6 +167,7 @@ class ProductsController extends Controller
         $product->sale = $request->sale;
         $product->new = $request->new;
         $product->top = $request->top;
+        $product->count_type = $request->count_type;
         $product->save();
 
         $validator = Validator::make($request->all(), [
@@ -178,15 +179,17 @@ class ProductsController extends Controller
 
         $files = $request->file('images');
 
-        foreach($files as $file) {
-            $product_image = new ProductImage();
-            $extension = $file->getClientOriginalExtension();
-            $path = 'storage/products/' . date('d') . '.' . date('m') . '.' . date('Y') . '/';
-            $b = 'product-' . Str::random(20). '.' . $extension;
-            $file->move($path, $b);
-            $product_image->product_id = $product->id;
-            $product_image->image_path = '/' . $path . $b;
-            $product_image->save();
+        if($files) {
+            foreach($files as $file) {
+                $product_image = new ProductImage();
+                $extension = $file->getClientOriginalExtension();
+                $path = 'storage/products/' . date('d') . '.' . date('m') . '.' . date('Y') . '/';
+                $b = 'product-' . Str::random(20). '.' . $extension;
+                $file->move($path, $b);
+                $product_image->product_id = $product->id;
+                $product_image->image_path = '/' . $path . $b;
+                $product_image->save();
+            }
         }
 
         return response()->json(['message' => "Успешно сохранен"], 200);
@@ -203,6 +206,7 @@ class ProductsController extends Controller
         $product->sale = $request->sale;
         $product->new = $request->new;
         $product->top = $request->top;
+        $product->count_type = $request->count_type;
         $product->save();
 
         $validator = Validator::make($request->all(), [
@@ -254,7 +258,7 @@ class ProductsController extends Controller
         return $products;
     }
     public function getProductsByCategory(Request $request) {
-        $products =  Product::query()->with("images")->where("category_id",$request->category_id)->get();
+        $products =  Product::query()->with("images")->where("category_id",$request->category_id)->paginate(6);
         return $products;
     }
     public function deleteProduct(Request $request) {
