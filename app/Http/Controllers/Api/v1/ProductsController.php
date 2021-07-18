@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Notifications\OrderNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Categories;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use File;
 use Illuminate\Support\Str;
+use NotificationChannels\Telegram\TelegramMessage;
 class ProductsController extends Controller
 {
     public function me(Request $request)
@@ -207,6 +209,7 @@ class ProductsController extends Controller
         $product->new = $request->new;
         $product->top = $request->top;
         $product->count_type = $request->count_type;
+        $product->article = $request->article;
         $product->save();
 
         $validator = Validator::make($request->all(), [
@@ -258,8 +261,29 @@ class ProductsController extends Controller
         return $products;
     }
     public function getProductsByCategory(Request $request) {
-        $products =  Product::query()->with("images")->where("category_id",$request->category_id)->paginate(6);
-        return $products;
+        $products =  Product::query()->with("images");
+        if($request->category_id) {
+            $products->where('category_id',$request->category_id);
+        }
+        if($request->sort && $request->sort==1) {
+            $products->orderBy('ordered_count','DESC');
+        }
+        if($request->sort && $request->sort==2) {
+           $products->orderBy('created_at','DESC');
+        }
+        if($request->sort && $request->sort==3) {
+            $products->orderBy('price','ASC');
+        }
+        if($request->sort && $request->sort==4) {
+            $products->orderBy('price','DESC');
+        }
+        if($request->priceFrom) {
+            $products->where('price','>=',$request->priceFrom);
+        }
+        if($request->priceTo) {
+            $products->where('price','<=',$request->priceTo);
+        }
+        return $products->paginate(8);
     }
     public function deleteProduct(Request $request) {
         $product =  Product::query()->where("id",$request->id)->first();
@@ -303,11 +327,16 @@ class ProductsController extends Controller
             $product->count = $request->orders[$i]["order_count"];
             $product->size = $request->orders[$i]["size"];
             $product->category_id =$request->orders[$i]['category_id'];
+
+
             $product->payed = false;
             $total_amount = $total_amount+$request->orders[$i]["price"];
             $product->save();
-        }
 
+            $good = Product::where('id',$request->orders[$i]['id'])->first();
+            $good->ordered_count=$good->ordered_count+1;
+            $good->save();
+        }
 
         $this->send_message($request->name.' '.$request->address,$request->phone_number.' | Заказано: '.$order_text);
 
@@ -350,9 +379,8 @@ class ProductsController extends Controller
     public   function send_message($user,$phone) {
 
         $message = 'Сегодня: '.date("Y-m-d").' ИНТЕРНЕТ МАГАЗИН Поступило новый заказ от заказщика '.$user.' - '.$phone;
-
-        $this->send_telegram(281900870,$message); // I
-//        $this->send_telegram(719817594,$message); // Kenes
+         $this->send_telegram(281900870,$message); // I
+         $this->send_telegram(719817594,$message); // Kenes
         //   $this->send_telegram(891800093,$message); // Wamwi
         //   $this->send_telegram(635324651,$message); // Menedjer
 
@@ -360,10 +388,22 @@ class ProductsController extends Controller
     public function send_telegram($id,$message)
     {
         $token = '1760765822:AAFp-bXa3wiHbeVm2fi2eT1TCyUkU6SmrHU';
-        $url='https://api.telegram.org/bot'.$token.'/sendMessage';$data=array('chat_id'=>$id,'text'=>$message);
-        $options=array('http'=>array('method'=>'POST','header'=>"Content-Type:application/x-www-form-urlencoded\r\n",'content'=>http_build_query($data),),);
-        $context=stream_context_create($options);
-        $result=file_get_contents($url,false,$context);
+//        $url='https://api.telegram.org/bot'.$token.'/sendMessage';$data=array('chat_id'=>$id,'text'=>$message);
+//        $options=array('http'=>array('method'=>'POST','header'=>"Content-Type:application/x-www-form-urlencoded\r\n",'content'=>http_build_query($data),),);
+//        $context=stream_context_create($options);
+//        $result=file_get_contents($url,false,$context);
+//        return $result;
+
+        $url = "https://api.telegram.org/bot" . $token . "/sendMessage?chat_id=" .$id ;
+        $url = $url . "&text=" . urlencode($message);
+        $ch = curl_init();
+        $optArray = array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true
+        );
+        curl_setopt_array($ch, $optArray);
+        $result = curl_exec($ch);
+        curl_close($ch);
         return $result;
     }
 
