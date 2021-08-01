@@ -21,6 +21,14 @@ use Illuminate\Support\Str;
 use NotificationChannels\Telegram\TelegramMessage;
 class ProductsController extends Controller
 {
+
+
+
+    public function deleteDuplicateProducts(Request $request)
+    {
+        ProductDuplicate::truncate();
+        return response()->json(['message' => "Успешно удалено"], 200);
+    }
     public function getDuplicateProducts(Request $request)
     {
         $products = ProductDuplicate::query()->get();

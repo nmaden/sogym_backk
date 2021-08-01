@@ -66,6 +66,8 @@ Route::prefix('v1')->group(function () {
 
             Route::post('/fill/products', 'Api\v1\ProductsController@fillProduct');
 
+            Route::post('/delete/all/products', 'Api\v1\ProductsController@deleteDuplicateProducts');
+
     });
 
     Route::get('/get/duplicate/products', 'Api\v1\ProductsController@getDuplicateProducts');
