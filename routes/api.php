@@ -64,7 +64,13 @@ Route::prefix('v1')->group(function () {
             Route::post('/update/purchase', 'Api\v1\PurchaseController@updatePurchase');
 
 
+            Route::post('/fill/products', 'Api\v1\ProductsController@fillProduct');
+
     });
+
+    Route::get('/get/duplicate/products', 'Api\v1\ProductsController@getDuplicateProducts');
+
+
 
     Route::get('/guest/get/products', 'Api\v1\ProductsController@getProducts');
 
@@ -91,6 +97,8 @@ Route::prefix('v1')->group(function () {
     Route::get('/get/purchases', 'Api\v1\PurchaseController@getPurchases');
     Route::post('/register', 'Api\v1\AuthController@register');
     Route::post('/login', 'Api\v1\AuthController@login');
+
+    Route::post('/update/password', 'Api\v1\AuthController@updatePassword');
 
 });
 

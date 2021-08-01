@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
 
-	public function register(Request $request) 
+	public function register(Request $request)
 	{
         $create = User::create([
             'name' => $request->name,
@@ -21,6 +21,17 @@ class AuthController extends Controller
             'password' => Hash::make($request->password)
         ]);
 	}
+    public function updatePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required'
+        ]);
+        $create = User::where("email",$request->email)->update([
+            'password' => Hash::make($request->password)
+        ]);
+    }
+
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [

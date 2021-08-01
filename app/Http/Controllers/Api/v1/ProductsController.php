@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Notifications\OrderNotification;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Categories;
@@ -11,6 +12,7 @@ use App\Models\Order;
 use App\Models\Ordered;
 use App\Models\ProductImage;
 use App\Models\Product;
+use App\Models\ProductDuplicate;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -19,6 +21,33 @@ use Illuminate\Support\Str;
 use NotificationChannels\Telegram\TelegramMessage;
 class ProductsController extends Controller
 {
+    public function getDuplicateProducts(Request $request)
+    {
+        $products = ProductDuplicate::query()->get();
+        return $products;
+    }
+    public function fillProduct(Request $request)
+    {
+        $products = $request->products;
+        for ($i=0; $i<count($products); $i++) {
+
+            $product = ProductDuplicate::query()->where("c_id",$products[$i]['c_id'])->first();
+            if($product) {
+                $product = $product;
+            }else {
+                $product = new ProductDuplicate();
+            }
+            $product->name_product = $products[$i]['name_product'];
+            $product->c_id = $products[$i]['c_id'];
+            $product->article = $products[$i]['article'];
+            $product->category_id = $products[$i]['category_id'];
+            $product->price = $products[$i]['price'];
+            $product->count = $products[$i]['count'];
+            $product->save();
+        }
+        return response()->json(['message' => "Успешно сохранен"], 200);
+    }
+
     public function me(Request $request)
     {
         $user = User::where('id', Auth::id())
