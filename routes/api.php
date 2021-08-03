@@ -26,11 +26,15 @@ Route::prefix('v1')->group(function () {
 
 
             Route::post('/update/category', 'Api\v1\ProductsController@updateCategory');
-            Route::get('/delete/category', 'Api\v1\ProductsController@deleteCategory');
+            Route::post('/delete/category', 'Api\v1\ProductsController@deleteCategory');
             Route::post('/create/category', 'Api\v1\ProductsController@createCategory');
 
 
-            Route::get('/delete/product', 'Api\v1\ProductsController@deleteProduct');
+            Route::post('/delete/product', 'Api\v1\ProductsController@deleteProduct');
+
+            Route::post('/delete/product/duplicate', 'Api\v1\ProductsController@deleteProductDuplicate');
+
+
 
             Route::get('/delete/product/image', 'Api\v1\ProductsController@deleteProductImage');
             Route::post('/update/product', 'Api\v1\ProductsController@updateProduct');

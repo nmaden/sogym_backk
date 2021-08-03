@@ -72,10 +72,14 @@ class ProductsController extends Controller
     public function updateCategory(Request $request) {
         $category =  Categories::query()->where("id",$request->id)->first();
         $category->name = $request->name;
+
+        if($request->p_id=='parent') {
+            $category->p_id = null;
+        }else {
+            $category->pd_id = $request->p_id;
+        }
         $category->save();
-
-
-        return response()->json(['message' => "Успешно удален"], 200);
+        return response()->json(['message' => "Успешно отредактирован"], 200);
     }
 
     public function deleteChildProduct($id) {
@@ -88,9 +92,15 @@ class ProductsController extends Controller
         $products = Product::query()->where("category_id",$id)->delete();
     }
     public function deleteCategory(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+
         $category =  Categories::query()->where("id",$request->id)->delete();
         $childs =  Categories::query()->where("p_id",$request->id)->get();
-
 
         if($childs) {
             for ($i=0; $i < count($childs); $i++) {
@@ -98,7 +108,6 @@ class ProductsController extends Controller
             }
         }
         $childs =  Categories::query()->where("p_id",$request->id)->delete();
-
 
         $products = Product::query()->where("category_id",$request->id)->get();
         if($products) {
@@ -301,7 +310,39 @@ class ProductsController extends Controller
         }
         return $products->paginate(8);
     }
+    public function deleteProductDuplicate(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'c_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+
+        $product =  ProductDuplicate::query()->where("c_id",$request->c_id)->first();
+
+        if(!$product) {
+            return response()->json(['message' => "Товар не найдено"], 400);
+        }
+
+//        $product_images = ProductImage::where("product_id",$product->id)->get();
+
+//        if(count($product_images)!=0) {
+//            for ($i=0; $i <count($product_images) ; $i++) {
+//                $this->deleteImage($product_images[$i]->image_path,$product_images[$i]->id);
+//            }
+//        }
+        $product =  ProductDuplicate::query()->where("id",$request->c_id)->delete();
+        return response()->json(['message' => "Успешно удален"], 200);
+    }
+
     public function deleteProduct(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+
         $product =  Product::query()->where("id",$request->id)->first();
         $product_images = ProductImage::where("product_id",$product->id)->get();
 
