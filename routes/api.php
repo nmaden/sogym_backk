@@ -25,8 +25,6 @@ Route::prefix('v1')->group(function () {
 
 
 
-
-
             Route::post('/update/category', 'Api\v1\ProductsController@updateCategory');
             Route::get('/delete/category', 'Api\v1\ProductsController@deleteCategory');
             Route::post('/create/category', 'Api\v1\ProductsController@createCategory');
@@ -42,7 +40,6 @@ Route::prefix('v1')->group(function () {
             Route::get('/get/orders', 'Api\v1\ProductsController@getOrders');
 
             Route::post('/delete/order', 'Api\v1\ProductsController@deleteOrder');
-
 
 
 

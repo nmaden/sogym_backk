@@ -116,42 +116,21 @@ class ProductsController extends Controller
     }
 
     public function createCategory(Request $request) {
-
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
         $category = new Categories();
-
         $category->name = $request->name;
         $category->p_id = $request->p_id;
-
         $category->save();
         return response()->json(['message' => "Успешно сохранен"], 200);
     }
     public function getCategories(Request $request) {
        $categories =  Categories::query()->where("p_id",null)->with("children")->get();
-
        return json_encode($categories,JSON_UNESCAPED_UNICODE);
-       $obj = [
-            "id"=>'',
-            "name"=> '',
-            "childs"=>[],
-            'p_id'=>''
-       ];
-
-       $arr = [];
-       $result = [];
-       for ($i=0; $i <count($categories); $i++) {
-            array_push($result,$obj);
-
-            $result[$i]["id"] = $categories[$i]->id;
-            $result[$i]["name"] = $categories[$i]->name;
-            $result[$i]["p_id"] = $categories[$i]->p_id;
-
-            if($categories[$i]->level>0) {
-                $result[$i]["childs"] = $this->getChilds($categories[$i]->id,$categories[$i]->level,$arr);
-            }
-
-       }
-
-       return json_encode($result,JSON_UNESCAPED_UNICODE);
     }
 
     public function getChilds($id,$level,$result) {
