@@ -36,6 +36,7 @@ class ProductsController extends Controller
     }
     public function fillProduct(Request $request)
     {
+
         $products = $request->products;
         for ($i=0; $i<count($products); $i++) {
 
@@ -141,11 +142,8 @@ class ProductsController extends Controller
        $categories =  Categories::query()->where("p_id",null)->with("children")->get();
        return json_encode($categories,JSON_UNESCAPED_UNICODE);
     }
-
     public function getChilds($id,$level,$result) {
-
         $categories =  Categories::query()->where('p_id',$id)->get();
-
         $obj = [
             "id"=>'',
             "name"=> '',
@@ -278,15 +276,17 @@ class ProductsController extends Controller
         return response()->json(['message' => "Успешно сохранен"], 200);
     }
     public function getProductDescription(Request $request) {
-        $description =  Product::query()->where("category_id",$request->category_id)->where("id",$request->product_id)->with("images")->first();
+
+//        where("category_id",$request->category_id)->
+        $description =  ProductDuplicate::query()->where("id",$request->product_id)->with("images")->first();
         return $description;
     }
     public function getProducts(Request $request) {
-        $products =  Product::query()->with("images")->paginate(6);
+        $products = ProductDuplicate::query()->with("images")->paginate(6);
         return $products;
     }
     public function getProductsByCategory(Request $request) {
-        $products =  Product::query()->with("images");
+        $products =  ProductDuplicate::query()->with("images");
         if($request->category_id) {
             $products->where('category_id',$request->category_id);
         }
@@ -375,23 +375,24 @@ class ProductsController extends Controller
         $total_amount = 0;
         $order_text = '';
         for ($i=0; $i < count($request->orders); $i++) {
-            $order_text = $order_text.$request->orders[$i]["name"].' количество: '.$request->orders[$i]["order_count"].' - цена: '.$request->orders[$i]["price"].'тг  ';
+            $order_text = $order_text.$request->orders[$i]["name_product"].' количество: '.$request->orders[$i]["order_count"].' - цена: '.$request->orders[$i]["price"].'тг  ';
             $product = new Order();
             $product->order_id = $ordered_main->id;
-            $product->name = $request->orders[$i]["name"];
-            $product->description = $request->orders[$i]["description"];
+            $product->name = $request->orders[$i]["name_product"];
+//            $product->description = $request->orders[$i]->description?$request->orders[$i]["description"]:'';
             $product->price =  $request->orders[$i]["price"];
             $product->count = $request->orders[$i]["order_count"];
-            $product->size = $request->orders[$i]["size"];
+//            $product->size = $request->orders[$i]["size"]?$request->orders[$i]["size"]:'';
             $product->category_id =$request->orders[$i]['category_id'];
 
+            $product->c_id = $request->orders[$i]['c_id'];
 
             $product->payed = false;
             $total_amount = $total_amount+$request->orders[$i]["price"];
             $product->save();
 
-            $good = Product::where('id',$request->orders[$i]['id'])->first();
-            $good->ordered_count=$good->ordered_count+1;
+            $good = ProductDuplicate::where('id',$request->orders[$i]['id'])->first();
+            $good->count=$good->count-$request->orders[$i]["order_count"];
             $good->save();
         }
 
@@ -466,10 +467,33 @@ class ProductsController extends Controller
 
     public function getOrders(Request $request) {
 //        $orders = Order::query()->orderBy("created_at","DESC")->get();
-
         $ordered = Ordered::query()->with('orders')->orderBy("created_at","DESC")->get();
         return $ordered;
     }
+
+
+    public function senderOrdersForC(Request $request) {
+//        $orders = Order::query()->orderBy("created_at","DESC")->get();
+        $orders =  Order::where("sended",0)->select(['id','c_id','count','sended'])->get();
+        return $orders;
+    }
+
+    public function updateSended(Request $request) {
+//        $orders = Order::query()->orderBy("created_at","DESC")->get();
+        $validator = Validator::make($request->all(), [
+            'orders' => 'required|array',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+        for ($i=0; $i<count($request->orders); $i++) {
+            $order =  Order::where("id",$request->orders[$i]['id'])->first();
+            $order->sended = 1;
+            $order->save();
+        }
+        return response()->json(['message' => 'Успешно обновлено'], 200);
+    }
+
     public function getOrder(Request $request) {
         $orders = Order::query()->where("id",$request->id)->get();
         return $orders;
@@ -477,5 +501,29 @@ class ProductsController extends Controller
     public function deleteOrder(Request $request) {
         $orders = Order::query()->where("id",$request->id)->delete();
         return response()->json(['message' => "Успешно удален"], 200);
+    }
+
+    public function deleteAllOrder(Request $request) {
+        $orders = Order::query()->delete();
+        return response()->json(['message' => "Успешно удален весь заказ"], 200);
+    }
+
+    public  function updateCount(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'products' => 'required|array',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+
+        for ($i=0; $i<count($request->products); $i++) {
+            $product = ProductDuplicate::where('c_id',$request->products[$i]['c_id'])->first();
+            if($product) {
+                $product->count = $request->products[$i]['count'];
+                $product->save();
+            }
+
+        }
+        return response()->json(['message' => "Количество успешно обнавлено"], 200);
     }
 }

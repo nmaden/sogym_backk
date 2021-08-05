@@ -16,7 +16,7 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpI
 }
 
 ###
-POST  https://api.kenesmebel.kz/api/v1/login
+POST  http://127.0.0.1:8000/api/v1/login
 Content-Type: application/json
 
 {
@@ -62,7 +62,7 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpI
 
 {
     "id": 21,
-    "name": "TestName",
+    "name": "Мебели",
     "p_id": "parent"
 }
 
@@ -104,6 +104,69 @@ Content-Type: application/json
     "password": "kenes04@gmail.com"
 }
 
+
+###
+POST  http://127.0.0.1:8000/api/v1/delete/all/order
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMWRhMzJkZTJhYWI0ZTQzNTdhN2JiYTNjYjI0YmU3NDgwOWRjNDJiMTY0ZjBiMDBhOGM4MDA2MjFiMTVhMTMwNGFjZjlkNDc4Zjg4Y2MxZDYiLCJpYXQiOiIxNjI4MDk3NzA1Ljk5NTMwNCIsIm5iZiI6IjE2MjgwOTc3MDUuOTk1MzE0IiwiZXhwIjoiMTY1OTYzMzcwNS45ODYzMzciLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WrZOvmyzcD7AMRUFQtfmAsY0_0UDL3GlIq-B6NDlLOGNrFuBiZ_tMcXQvTZtwS0mbGaHL9P_vKBEbUaBeQ8vrAeTmnt1C5Q06v0J43SU2b_MZri_bjFFFfkOhrNOSRTBSg4mA4-WQb5tcAZZ1AZcZpBoRLjbfZ0WyFY3u1T8UkV4HrFYFydRwd6UCsf4LSZjrC-bpIgBSGsiWzq6PYb-VzzhAjC08vqIITdnBh_SCUXTmZAcAH7k-guFaByY47uMG2pnfOUlGbk_Wzdc-j9gZKbEKX8oSVT9MrEC6JVsxlAwXY8jWVkjg96rgLaG009QX-W4YKMuxrfbPh9wjKwHuIOW1SgyMrBiXQVEPqjkC0Gm2e546QcT4iQxaqQw--1e75rEmcSIrlpj-gjCuT_AK4ys8knCltD9AqeLmzx3hhdowbP0NsQcPZL0KQQHrGwT1bxiQ20YpqUwKCbKtkiGK3JqYgOO356VJTuq0makolTp-OE17aIX102M2tvcmgD4TY-dLCi6gMjKwf-L58ddmnZdi6kNvKgrvrv0i_ZowvpNE6d37ANmxDqy6ymfeQzAnz5KYA9YVJHe5GHpoW9zDZn9aptMS9szJCaWmjItYPbqBLnJw48r48_DXSleFV4pcHz1jF_5t5YCFfGR9qBjYK6ZOrJx9E3JVj_9y5n4jwU
+
+{
+
+}
+
+###
+GET  http://127.0.0.1:8000/api/v1/get/orders
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMWRhMzJkZTJhYWI0ZTQzNTdhN2JiYTNjYjI0YmU3NDgwOWRjNDJiMTY0ZjBiMDBhOGM4MDA2MjFiMTVhMTMwNGFjZjlkNDc4Zjg4Y2MxZDYiLCJpYXQiOiIxNjI4MDk3NzA1Ljk5NTMwNCIsIm5iZiI6IjE2MjgwOTc3MDUuOTk1MzE0IiwiZXhwIjoiMTY1OTYzMzcwNS45ODYzMzciLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WrZOvmyzcD7AMRUFQtfmAsY0_0UDL3GlIq-B6NDlLOGNrFuBiZ_tMcXQvTZtwS0mbGaHL9P_vKBEbUaBeQ8vrAeTmnt1C5Q06v0J43SU2b_MZri_bjFFFfkOhrNOSRTBSg4mA4-WQb5tcAZZ1AZcZpBoRLjbfZ0WyFY3u1T8UkV4HrFYFydRwd6UCsf4LSZjrC-bpIgBSGsiWzq6PYb-VzzhAjC08vqIITdnBh_SCUXTmZAcAH7k-guFaByY47uMG2pnfOUlGbk_Wzdc-j9gZKbEKX8oSVT9MrEC6JVsxlAwXY8jWVkjg96rgLaG009QX-W4YKMuxrfbPh9wjKwHuIOW1SgyMrBiXQVEPqjkC0Gm2e546QcT4iQxaqQw--1e75rEmcSIrlpj-gjCuT_AK4ys8knCltD9AqeLmzx3hhdowbP0NsQcPZL0KQQHrGwT1bxiQ20YpqUwKCbKtkiGK3JqYgOO356VJTuq0makolTp-OE17aIX102M2tvcmgD4TY-dLCi6gMjKwf-L58ddmnZdi6kNvKgrvrv0i_ZowvpNE6d37ANmxDqy6ymfeQzAnz5KYA9YVJHe5GHpoW9zDZn9aptMS9szJCaWmjItYPbqBLnJw48r48_DXSleFV4pcHz1jF_5t5YCFfGR9qBjYK6ZOrJx9E3JVj_9y5n4jwU
+
+{
+
+}
+
+###
+GET  https://api.kenesmebel.kz/api/v1/get/orders
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMWRhMzJkZTJhYWI0ZTQzNTdhN2JiYTNjYjI0YmU3NDgwOWRjNDJiMTY0ZjBiMDBhOGM4MDA2MjFiMTVhMTMwNGFjZjlkNDc4Zjg4Y2MxZDYiLCJpYXQiOiIxNjI4MDk3NzA1Ljk5NTMwNCIsIm5iZiI6IjE2MjgwOTc3MDUuOTk1MzE0IiwiZXhwIjoiMTY1OTYzMzcwNS45ODYzMzciLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WrZOvmyzcD7AMRUFQtfmAsY0_0UDL3GlIq-B6NDlLOGNrFuBiZ_tMcXQvTZtwS0mbGaHL9P_vKBEbUaBeQ8vrAeTmnt1C5Q06v0J43SU2b_MZri_bjFFFfkOhrNOSRTBSg4mA4-WQb5tcAZZ1AZcZpBoRLjbfZ0WyFY3u1T8UkV4HrFYFydRwd6UCsf4LSZjrC-bpIgBSGsiWzq6PYb-VzzhAjC08vqIITdnBh_SCUXTmZAcAH7k-guFaByY47uMG2pnfOUlGbk_Wzdc-j9gZKbEKX8oSVT9MrEC6JVsxlAwXY8jWVkjg96rgLaG009QX-W4YKMuxrfbPh9wjKwHuIOW1SgyMrBiXQVEPqjkC0Gm2e546QcT4iQxaqQw--1e75rEmcSIrlpj-gjCuT_AK4ys8knCltD9AqeLmzx3hhdowbP0NsQcPZL0KQQHrGwT1bxiQ20YpqUwKCbKtkiGK3JqYgOO356VJTuq0makolTp-OE17aIX102M2tvcmgD4TY-dLCi6gMjKwf-L58ddmnZdi6kNvKgrvrv0i_ZowvpNE6d37ANmxDqy6ymfeQzAnz5KYA9YVJHe5GHpoW9zDZn9aptMS9szJCaWmjItYPbqBLnJw48r48_DXSleFV4pcHz1jF_5t5YCFfGR9qBjYK6ZOrJx9E3JVj_9y5n4jwU
+
+{
+
+}
+
+
+###
+POST  https://api.kenesmebel.kz/api/v1/update/to/sended
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMWRhMzJkZTJhYWI0ZTQzNTdhN2JiYTNjYjI0YmU3NDgwOWRjNDJiMTY0ZjBiMDBhOGM4MDA2MjFiMTVhMTMwNGFjZjlkNDc4Zjg4Y2MxZDYiLCJpYXQiOiIxNjI4MDk3NzA1Ljk5NTMwNCIsIm5iZiI6IjE2MjgwOTc3MDUuOTk1MzE0IiwiZXhwIjoiMTY1OTYzMzcwNS45ODYzMzciLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WrZOvmyzcD7AMRUFQtfmAsY0_0UDL3GlIq-B6NDlLOGNrFuBiZ_tMcXQvTZtwS0mbGaHL9P_vKBEbUaBeQ8vrAeTmnt1C5Q06v0J43SU2b_MZri_bjFFFfkOhrNOSRTBSg4mA4-WQb5tcAZZ1AZcZpBoRLjbfZ0WyFY3u1T8UkV4HrFYFydRwd6UCsf4LSZjrC-bpIgBSGsiWzq6PYb-VzzhAjC08vqIITdnBh_SCUXTmZAcAH7k-guFaByY47uMG2pnfOUlGbk_Wzdc-j9gZKbEKX8oSVT9MrEC6JVsxlAwXY8jWVkjg96rgLaG009QX-W4YKMuxrfbPh9wjKwHuIOW1SgyMrBiXQVEPqjkC0Gm2e546QcT4iQxaqQw--1e75rEmcSIrlpj-gjCuT_AK4ys8knCltD9AqeLmzx3hhdowbP0NsQcPZL0KQQHrGwT1bxiQ20YpqUwKCbKtkiGK3JqYgOO356VJTuq0makolTp-OE17aIX102M2tvcmgD4TY-dLCi6gMjKwf-L58ddmnZdi6kNvKgrvrv0i_ZowvpNE6d37ANmxDqy6ymfeQzAnz5KYA9YVJHe5GHpoW9zDZn9aptMS9szJCaWmjItYPbqBLnJw48r48_DXSleFV4pcHz1jF_5t5YCFfGR9qBjYK6ZOrJx9E3JVj_9y5n4jwU
+
+{
+    "orders": [
+        {
+            "id": 1
+        },
+        {
+            "id": 1
+        }
+    ]
+}
+
+###
+POST  http://127.0.0.1:8000/api/v1/update/count
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMWRhMzJkZTJhYWI0ZTQzNTdhN2JiYTNjYjI0YmU3NDgwOWRjNDJiMTY0ZjBiMDBhOGM4MDA2MjFiMTVhMTMwNGFjZjlkNDc4Zjg4Y2MxZDYiLCJpYXQiOiIxNjI4MDk3NzA1Ljk5NTMwNCIsIm5iZiI6IjE2MjgwOTc3MDUuOTk1MzE0IiwiZXhwIjoiMTY1OTYzMzcwNS45ODYzMzciLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WrZOvmyzcD7AMRUFQtfmAsY0_0UDL3GlIq-B6NDlLOGNrFuBiZ_tMcXQvTZtwS0mbGaHL9P_vKBEbUaBeQ8vrAeTmnt1C5Q06v0J43SU2b_MZri_bjFFFfkOhrNOSRTBSg4mA4-WQb5tcAZZ1AZcZpBoRLjbfZ0WyFY3u1T8UkV4HrFYFydRwd6UCsf4LSZjrC-bpIgBSGsiWzq6PYb-VzzhAjC08vqIITdnBh_SCUXTmZAcAH7k-guFaByY47uMG2pnfOUlGbk_Wzdc-j9gZKbEKX8oSVT9MrEC6JVsxlAwXY8jWVkjg96rgLaG009QX-W4YKMuxrfbPh9wjKwHuIOW1SgyMrBiXQVEPqjkC0Gm2e546QcT4iQxaqQw--1e75rEmcSIrlpj-gjCuT_AK4ys8knCltD9AqeLmzx3hhdowbP0NsQcPZL0KQQHrGwT1bxiQ20YpqUwKCbKtkiGK3JqYgOO356VJTuq0makolTp-OE17aIX102M2tvcmgD4TY-dLCi6gMjKwf-L58ddmnZdi6kNvKgrvrv0i_ZowvpNE6d37ANmxDqy6ymfeQzAnz5KYA9YVJHe5GHpoW9zDZn9aptMS9szJCaWmjItYPbqBLnJw48r48_DXSleFV4pcHz1jF_5t5YCFfGR9qBjYK6ZOrJx9E3JVj_9y5n4jwU
+
+{
+    "products": [
+        {
+            "c_id": 1,
+            "count": 2
+        },
+        {
+            "c_id": 2,
+            "count": 2
+        }
+    ]
+}
+
 ###
 POST http://127.0.0.1:8000/api/v1/user/me
 Content-Type: application/json
@@ -127,6 +190,8 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpI
 ###
 GET  http://127.0.0.1:8000/api/v1/get/purchase
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiM2Q4NWNhYThmZGQ4MjRjMjZlYjFjYzU4MTEwMTcyYjYyOWMyMzEyYzA1NWM1ZThjMTNhZTQyMmYzYjQ3YzI5ZDMwOGM2NTJhMWY4NDdhYjUiLCJpYXQiOiIxNjE1NDU5NTkzLjg5Mzk4OCIsIm5iZiI6IjE2MTU0NTk1OTMuODkzOTk3IiwiZXhwIjoiMTY0Njk5NTU5My44OTAzNDAiLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.f7Bg90IFmlr5SLU9vbLiOJjnzCKo5uvPtAD12_kNqOgNDjW-qgVk00Fey_o8ffqPPHp5qjpabvjAS853HqXUvhfIe8mgjI5Z3oYlJcmTsNyvKE3Em2A9u1ab3XaWApwvya0Sz6qYBpTo2Ak1nzAc3fwy4sDHZnXOOpgP4c5FFPMHxY290yF9EmhuJNY8_ulwE_WjEuoC8t641chz6vfuNpYdbFdGUzchx9elxaE5xQsJcd1_s07yclUnp_NZrVjtW2cPsq-ZhEcmn2w-X1Kk1WGFVLBHkNQOUtUbHUXl9XOmpkO-5Aw_ZhKcFz3I6w4oGVZqPUM6s9FUptB-D1ERYpE4uMwDYFFOJ6ey-LGGsKVfMFd9D49-N_9BQV-wt3h3HcnTUGks4FkSKAZ6-BV6D44Xr2cp2nhCuo-sqrikYK_qsfrexMuFMPVx7_IwWwUc7SG7JBu_iVss4BQ0TCj6c3OJ68UdZ5JAALa4hU_XpJYwQl_wWIchtknJ1xpd_j83G-MvJ4v_0nupboJju-b0rUkE3Q73Fq-1PcDocqhWzkcoNRYZb5PzaQiGi2IxSPjxe8EW2T8u-NY6ixpwJPljnoNVNSS6Q5XcUbTDLsN6-u_iQyY5RKZ3fm8xfUdpL51z17aQxJoNjRQ6ZyZGZeHqsOZT3kFIPMcB910pweQ55_o
+
 
 {
     "id": 1

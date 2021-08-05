@@ -45,9 +45,19 @@ Route::prefix('v1')->group(function () {
 
             Route::post('/delete/order', 'Api\v1\ProductsController@deleteOrder');
 
+            Route::post('/delete/all/order', 'Api\v1\ProductsController@deleteAllOrder');
 
 
-            Route::post('/create/purchase', 'Api\v1\PurchaseController@createPurchase');
+
+            Route::get('/get/orders', 'Api\v1\ProductsController@senderOrdersForC');
+            Route::post('/update/to/sended', 'Api\v1\ProductsController@updateSended');
+
+
+            Route::post('/update/count', 'Api\v1\ProductsController@updateCount');
+
+
+
+        Route::post('/create/purchase', 'Api\v1\PurchaseController@createPurchase');
             Route::get('/get/applications', 'Api\v1\PurchaseController@getApplications');
             Route::post('/accept/application', 'Api\v1\PurchaseController@acceptApplication');
 
