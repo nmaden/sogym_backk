@@ -480,6 +480,7 @@ class ProductsController extends Controller
 
     public function updateSended(Request $request) {
 //        $orders = Order::query()->orderBy("created_at","DESC")->get();
+
         $validator = Validator::make($request->all(), [
             'orders' => 'required|array',
         ]);
@@ -488,10 +489,12 @@ class ProductsController extends Controller
         }
         for ($i=0; $i<count($request->orders); $i++) {
             $order =  Order::where("id",$request->orders[$i]['id'])->first();
-            $order->sended = 1;
-            $order->save();
+            if($order) {
+                $order->sended = 1;
+                $order->save();
+            }
         }
-        return response()->json(['message' => 'Успешно обновлено'], 200);
+        return response()->json(['message' => 'Заказ успешно обновлено, Красава'], 200);
     }
 
     public function getOrder(Request $request) {
