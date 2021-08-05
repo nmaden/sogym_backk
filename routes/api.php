@@ -55,6 +55,8 @@ Route::prefix('v1')->group(function () {
 
             Route::post('/update/count', 'Api\v1\ProductsController@updateCount');
 
+            Route::post('/update/product/action/c', 'Api\v1\ProductsController@updateActionC');
+
 
 
         Route::post('/create/purchase', 'Api\v1\PurchaseController@createPurchase');

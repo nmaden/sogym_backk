@@ -141,16 +141,19 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpI
 {
     "orders": [
         {
-            "id": 1
+            "id": 58
         },
         {
-            "id": 1
+            "id": 59
+        },
+        {
+            "id": 60
         }
     ]
 }
 
 ###
-POST  http://127.0.0.1:8000/api/v1/update/count
+POST  http://127.0.0.1:8000/api/v1/update/product/action/c
 Content-Type: application/json
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMWRhMzJkZTJhYWI0ZTQzNTdhN2JiYTNjYjI0YmU3NDgwOWRjNDJiMTY0ZjBiMDBhOGM4MDA2MjFiMTVhMTMwNGFjZjlkNDc4Zjg4Y2MxZDYiLCJpYXQiOiIxNjI4MDk3NzA1Ljk5NTMwNCIsIm5iZiI6IjE2MjgwOTc3MDUuOTk1MzE0IiwiZXhwIjoiMTY1OTYzMzcwNS45ODYzMzciLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WrZOvmyzcD7AMRUFQtfmAsY0_0UDL3GlIq-B6NDlLOGNrFuBiZ_tMcXQvTZtwS0mbGaHL9P_vKBEbUaBeQ8vrAeTmnt1C5Q06v0J43SU2b_MZri_bjFFFfkOhrNOSRTBSg4mA4-WQb5tcAZZ1AZcZpBoRLjbfZ0WyFY3u1T8UkV4HrFYFydRwd6UCsf4LSZjrC-bpIgBSGsiWzq6PYb-VzzhAjC08vqIITdnBh_SCUXTmZAcAH7k-guFaByY47uMG2pnfOUlGbk_Wzdc-j9gZKbEKX8oSVT9MrEC6JVsxlAwXY8jWVkjg96rgLaG009QX-W4YKMuxrfbPh9wjKwHuIOW1SgyMrBiXQVEPqjkC0Gm2e546QcT4iQxaqQw--1e75rEmcSIrlpj-gjCuT_AK4ys8knCltD9AqeLmzx3hhdowbP0NsQcPZL0KQQHrGwT1bxiQ20YpqUwKCbKtkiGK3JqYgOO356VJTuq0makolTp-OE17aIX102M2tvcmgD4TY-dLCi6gMjKwf-L58ddmnZdi6kNvKgrvrv0i_ZowvpNE6d37ANmxDqy6ymfeQzAnz5KYA9YVJHe5GHpoW9zDZn9aptMS9szJCaWmjItYPbqBLnJw48r48_DXSleFV4pcHz1jF_5t5YCFfGR9qBjYK6ZOrJx9E3JVj_9y5n4jwU
 
@@ -158,14 +161,20 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpI
     "products": [
         {
             "c_id": 1,
-            "count": 2
+            "count": 2,
+            "price": 200
         },
         {
             "c_id": 2,
-            "count": 2
+            "count": 2,
+            "price": 5000
         }
     ]
 }
+
+
+
+
 
 ###
 POST http://127.0.0.1:8000/api/v1/user/me

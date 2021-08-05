@@ -474,7 +474,7 @@ class ProductsController extends Controller
 
     public function senderOrdersForC(Request $request) {
 //        $orders = Order::query()->orderBy("created_at","DESC")->get();
-        $orders =  Order::where("sended",0)->select(['id','c_id','count','sended'])->get();
+        $orders =  Order::where("sended",0)->select(['id','c_id','count','sended','price'])->get();
         return $orders;
     }
 
@@ -525,5 +525,25 @@ class ProductsController extends Controller
 
         }
         return response()->json(['message' => "Количество успешно обнавлено"], 200);
+    }
+
+    public function updateActionC(Request  $request) {
+        $validator = Validator::make($request->all(), [
+            'products' => 'required|array',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+
+        for ($i=0; $i<count($request->products); $i++) {
+            $product = ProductDuplicate::where('c_id',$request->products[$i]['c_id'])->first();
+            if($product) {
+                $product->count = $request->products[$i]['count'];
+                $product->price = $request->products[$i]['price'];
+                $product->save();
+            }
+
+        }
+        return response()->json(['message' => "Товар успешно обнавлено"], 200);
     }
 }
