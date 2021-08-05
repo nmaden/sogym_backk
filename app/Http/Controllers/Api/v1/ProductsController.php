@@ -282,7 +282,10 @@ class ProductsController extends Controller
         return $description;
     }
     public function getProducts(Request $request) {
-        $products = ProductDuplicate::query()->with("images")->paginate(6);
+        $products = ProductDuplicate::query()->with("images")
+            ->where('price','!=',0)
+            ->where('count','!=',0)
+            ->paginate(6);
         return $products;
     }
     public function getProductsByCategory(Request $request) {
