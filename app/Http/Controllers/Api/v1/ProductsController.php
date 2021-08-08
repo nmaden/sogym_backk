@@ -14,6 +14,7 @@ use App\Models\ProductImage;
 use App\Models\Product;
 use App\Models\ProductDuplicate;
 use App\Models\User;
+use App\Models\Banner;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use File;
@@ -22,7 +23,45 @@ use NotificationChannels\Telegram\TelegramMessage;
 class ProductsController extends Controller
 {
 
-
+    public  function deleteBanner(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+        $banner = Banner::where('id',$request->id)->first();
+        if(file_exists(public_path($banner->image_path))){
+            unlink(public_path($banner->image_path));
+            Banner::query()->where("id",$request->id)->delete();
+        };
+        return response()->json(['message' => "Успешно удалено"], 200);
+    }
+    public  function  getBanners(Request $request) {
+        $banners =  Banner::query()->get();
+        return $banners;
+    }
+    public  function  createBanner(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'images.*' => 'max:1024',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+        $files = $request->file('images');
+        if($files) {
+            foreach($files as $file) {
+                $banner = new Banner();
+                $extension = $file->getClientOriginalExtension();
+                $path = 'storage/products/' . date('d') . '.' . date('m') . '.' . date('Y') . '/';
+                $b = 'banner-' . Str::random(20). '.' . $extension;
+                $file->move($path, $b);
+                $banner->image_path = '/' . $path . $b;
+                $banner->save();
+            }
+        }
+        return response()->json(['message' => "Успешно сохранен"], 200);
+    }
 
     public function deleteDuplicateProducts(Request $request)
     {
