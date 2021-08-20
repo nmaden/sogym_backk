@@ -160,7 +160,7 @@ class ProductsController extends Controller
         return response()->json(['message' => "Успешно удален"], 200);
     }
     public function getProductsAdminByCategory(Request $request) {
-        $products =  Product::query()->with("images")->where("category_id",$request->category_id)->get();
+        $products =  ProductDuplicate::query()->with("images")->where("category_id",$request->category_id)->get();
         return $products;
     }
 
@@ -328,7 +328,7 @@ class ProductsController extends Controller
         return $products;
     }
     public function getProductsByCategory(Request $request) {
-        $products =  ProductDuplicate::query()->with("images");
+        $products =  ProductDuplicate::query()->where('count','!=',0)->where('price','!=',0)->with("images");
         if($request->category_id) {
             $products->where('category_id',$request->category_id);
         }
