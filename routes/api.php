@@ -26,6 +26,13 @@ Route::prefix('v1')->group(function () {
             Route::post('/create/banner', 'Api\v1\ProductsController@createBanner');
             Route::post('/del/banner', 'Api\v1\ProductsController@deleteBanner');
 
+            Route::get('/get/admin/products', 'Api\v1\ProductsController@getAdminProducts');
+
+            Route::post('/set/category', 'Api\v1\ProductsController@setCategory');
+
+            Route::post('/set/show/product', 'Api\v1\ProductsController@setShowProduct');
+
+
 
         Route::post('/update/category', 'Api\v1\ProductsController@updateCategory');
             Route::post('/delete/category', 'Api\v1\ProductsController@deleteCategory');
@@ -77,12 +84,8 @@ Route::prefix('v1')->group(function () {
 
             Route::get('/delete/application', 'Api\v1\PurchaseController@deleteApplication');
             Route::post('/update/purchase', 'Api\v1\PurchaseController@updatePurchase');
-
-
             Route::post('/fill/products', 'Api\v1\ProductsController@fillProduct');
-
             Route::post('/delete/all/products', 'Api\v1\ProductsController@deleteDuplicateProducts');
-
     });
     Route::get('/get/banners', 'Api\v1\ProductsController@getBanners');
 

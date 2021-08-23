@@ -15,4 +15,9 @@ class ProductDuplicate extends Model
         return $this->hasMany(ProductImage::class,'product_id','id');
     }
 
+    public function category() {
+        return $this->hasOne(Categories::class,'id','category_id');
+    }
+
+
 }

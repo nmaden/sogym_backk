@@ -105,7 +105,9 @@ class ProductsController extends Controller
         return $user;
     }
     public function searchProduct(Request $request) {
-        $products =  Product::query()->with("images")->where("name", 'like', '%'.$request->name.'%')->paginate(6);
+        $products =  ProductDuplicate::query()->with("images")
+            ->where('count','!=',0)
+            ->where('price','!=',0)->where("name_product", 'like', '%'.$request->name.'%')->paginate(3);
         return $products;
     }
 
@@ -221,16 +223,16 @@ class ProductsController extends Controller
         return response()->json(['message' => "Рисонок успешно удален"], 200);
     }
     public function updateProduct(Request $request) {
-        $product = Product::query()->where("id",$request->id)->first();
-        $product->name = $request->name;
+        $product = ProductDuplicate::query()->where("id",$request->id)->first();
+        $product->name_product = $request->name_product;
         $product->description = $request->description;
         $product->price = $request->price;
         $product->count = $request->count;
-        $product->size = $request->size;
+        $product->add_size = $request->size;
         $product->category_id = $request->category_id;
-        $product->sale = $request->sale;
-        $product->new = $request->new;
-        $product->top = $request->top;
+//        $product->sale = $request->sale;
+//        $product->new = $request->new;
+//        $product->top = $request->top;
         $product->count_type = $request->count_type;
         $product->save();
 
@@ -317,16 +319,23 @@ class ProductsController extends Controller
     public function getProductDescription(Request $request) {
 
 //        where("category_id",$request->category_id)->
-        $description =  ProductDuplicate::query()->where("id",$request->product_id)->with("images")->first();
+        $description =  ProductDuplicate::query()->where("id",$request->product_id)->where('show_on_site',1)->with("images")->first();
         return $description;
     }
     public function getProducts(Request $request) {
         $products = ProductDuplicate::query()->with("images")
+            ->where('show_on_site',1)
             ->where('price','!=',0)
             ->where('count','!=',0)
             ->paginate(6);
         return $products;
     }
+    public function getAdminProducts(Request $request) {
+        $products = ProductDuplicate::query()->with("images")->with('category')
+            ->paginate(6);
+        return $products;
+    }
+
     public function getProductsByCategory(Request $request) {
         $products =  ProductDuplicate::query()->where('count','!=',0)->where('price','!=',0)->with("images");
         if($request->category_id) {
@@ -511,6 +520,33 @@ class ProductsController extends Controller
 //        $orders = Order::query()->orderBy("created_at","DESC")->get();
         $ordered = Ordered::query()->with('orders')->orderBy("created_at","DESC")->get();
         return $ordered;
+    }
+
+    public  function setShowProduct(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'show_on_site'=>'required|boolean'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+        $productDuplicate = ProductDuplicate::where('id',$request->id)->first();
+        $productDuplicate->show_on_site = $request->show_on_site;
+        $productDuplicate->save();
+        return response()->json(['message' => 'Успешно сохранен'], 200);
+    }
+    public  function setCategory(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'category_id'=>'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+        $product = ProductDuplicate::where('id',$request->id)->first();
+        $product->category_id = $request->category_id;
+        $product->save();
+        return response()->json(['message' => 'Категория успешно добавлено'], 200);
     }
 
 
