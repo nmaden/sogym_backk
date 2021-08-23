@@ -32,6 +32,7 @@ Route::prefix('v1')->group(function () {
 
             Route::post('/set/show/product', 'Api\v1\ProductsController@setShowProduct');
 
+            Route::post('/find/product', 'Api\v1\ProductsController@findProduct');
 
 
         Route::post('/update/category', 'Api\v1\ProductsController@updateCategory');

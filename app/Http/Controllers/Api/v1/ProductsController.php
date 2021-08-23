@@ -361,6 +361,21 @@ class ProductsController extends Controller
         }
         return $products->paginate(8);
     }
+    public  function findProduct(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'c_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+        $product = ProductDuplicate::where('c_id',$request->c_id)->first();
+        if($product) {
+            return  'true';
+        }
+        else {
+            return  'false';
+        }
+    }
     public function deleteProductDuplicate(Request $request) {
         $validator = Validator::make($request->all(), [
             'c_id' => 'required',
