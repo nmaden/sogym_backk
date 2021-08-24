@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api\v1;
-
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Notifications\OrderNotification;
 use Illuminate\Database\Eloquent\Model;
@@ -78,7 +78,6 @@ class ProductsController extends Controller
 
         $products = $request->products;
         for ($i=0; $i<count($products); $i++) {
-
             $product = ProductDuplicate::query()->where("c_id",$products[$i]['c_id'])->first();
             if($product) {
                 $product = $product;
@@ -91,6 +90,8 @@ class ProductsController extends Controller
             $product->category_id = $products[$i]['category_id'];
             $product->price = $products[$i]['price'];
             $product->count = $products[$i]['count'];
+            $product->price_sale = (isset($products[$i]['price_sale']))?$products[$i]['price_sale']:'';
+            $product->percent = (isset($products[$i]['percent']))?$products[$i]['percent']:'';
             $product->save();
         }
         return response()->json(['message' => "Успешно сохранен"], 200);
@@ -567,7 +568,17 @@ class ProductsController extends Controller
 
     public function senderOrdersForC(Request $request) {
 //        $orders = Order::query()->orderBy("created_at","DESC")->get();
-        $orders =  Order::where("sended",0)->select(['id','c_id','count','sended','price'])->get();
+        $orders =  Order::with('info')->get();
+
+        for ($i=0; $i<count($orders); $i++) {
+            $orders[$i]['info']['delivery_type'] = $orders[$i]['info']['delivery_type']==1?'Доставка':'Самовывоз';
+            if($orders[$i]['info']['delivery_type']==1) {
+                $orders[$i]['contact'] = 'Заказано: '.Carbon::parse($orders[$i]['info']['created_at'])->format('d.m.Y h:i').' - '.$orders[$i]['info']['phone'].' - '.$orders[$i]['info']['name_user'].' - '.$orders[$i]['info']['address'].' - '.$orders[$i]['info']['delivery_type'];
+            }else {
+                $orders[$i]['contact'] = 'Заказано: '.Carbon::parse($orders[$i]['info']['created_at'])->format('d.m.Y h:i').' - '.$orders[$i]['info']['phone'].' - '.$orders[$i]['info']['name_user'].' - '.$orders[$i]['info']['delivery_type'];
+            }
+
+        }
         return $orders;
     }
 
@@ -636,6 +647,8 @@ class ProductsController extends Controller
             if($product) {
                 $product->count = $request->products[$i]['count'];
                 $product->price = $request->products[$i]['price'];
+                $product->price_sale = (isset($products[$i]['price_sale']))?$products[$i]['price_sale']:'';
+                $product->percent = (isset($products[$i]['percent']))?$products[$i]['percent']:'';
                 $product->save();
             }
 
