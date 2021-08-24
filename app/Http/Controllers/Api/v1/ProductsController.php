@@ -645,10 +645,13 @@ class ProductsController extends Controller
         for ($i=0; $i<count($request->products); $i++) {
             $product = ProductDuplicate::where('c_id',$request->products[$i]['c_id'])->first();
             if($product) {
+                $price_sale = $request->products[$i]['price_sale'];
+                $percent = $request->products[$i]['percent'];
+
                 $product->count = $request->products[$i]['count'];
                 $product->price = $request->products[$i]['price'];
-                $product->price_sale = (isset($products[$i]['price_sale']))?$products[$i]['price_sale']:'';
-                $product->percent = (isset($products[$i]['percent']))?$products[$i]['percent']:'';
+                $product->price_sale = isset($price_sale)?$request->products[$i]['price_sale']:'';
+                $product->percent = isset($percent)?$request->products[$i]['percent']:'';
                 $product->save();
             }
 
