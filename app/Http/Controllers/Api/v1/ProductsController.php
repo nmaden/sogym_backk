@@ -108,7 +108,7 @@ class ProductsController extends Controller
     public function searchProduct(Request $request) {
         $products =  ProductDuplicate::query()->with("images")
             ->where('count','!=',0)
-            ->where('price','!=',0)->where("name_product", 'like', '%'.$request->name.'%')->paginate(3);
+            ->where('price','!=',0)->where("name_product", 'like', '%'.$request->name.'%')->paginate(8);
         return $products;
     }
 
@@ -328,7 +328,7 @@ class ProductsController extends Controller
             ->where('show_on_site',1)
             ->where('price','!=',0)
             ->where('count','!=',0)
-            ->paginate(6);
+            ->paginate(8);
         return $products;
     }
     public function getAdminProducts(Request $request) {
@@ -459,7 +459,9 @@ class ProductsController extends Controller
             $product->save();
 
             $good = ProductDuplicate::where('id',$request->orders[$i]['id'])->first();
-            $good->count=$good->count-$request->orders[$i]["order_count"];
+
+//            $good->count=$good->count-$request->orders[$i]["order_count"];
+
             $good->save();
         }
 
@@ -569,12 +571,11 @@ class ProductsController extends Controller
     public function senderOrdersForC(Request $request) {
 //        $orders = Order::query()->orderBy("created_at","DESC")->get();
         $orders =  Order::with('info')->get();
-
         for ($i=0; $i<count($orders); $i++) {
             $orders[$i]['info']['delivery_type'] = $orders[$i]['info']['delivery_type']==1?'Доставка':'Самовывоз';
             if($orders[$i]['info']['delivery_type']==1) {
                 $orders[$i]['contact'] = 'Заказано: '.Carbon::parse($orders[$i]['info']['created_at'])->format('d.m.Y h:i').' - '.$orders[$i]['info']['phone'].' - '.$orders[$i]['info']['name_user'].' - '.$orders[$i]['info']['address'].' - '.$orders[$i]['info']['delivery_type'];
-            }else {
+            } else {
                 $orders[$i]['contact'] = 'Заказано: '.Carbon::parse($orders[$i]['info']['created_at'])->format('d.m.Y h:i').' - '.$orders[$i]['info']['phone'].' - '.$orders[$i]['info']['name_user'].' - '.$orders[$i]['info']['delivery_type'];
             }
 
