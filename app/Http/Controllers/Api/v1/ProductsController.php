@@ -332,13 +332,15 @@ class ProductsController extends Controller
         return $products;
     }
     public function getAdminProducts(Request $request) {
-        $products = ProductDuplicate::query()->with("images")->with('category')
+        $products = ProductDuplicate::query()->orderBy('updated_at','DESC')->with("images")->with('category')
             ->paginate(6);
         return $products;
     }
 
     public function getProductsByCategory(Request $request) {
-        $products =  ProductDuplicate::query()->where('count','!=',0)->where('price','!=',0)->with("images");
+        $products =  ProductDuplicate::query()
+            ->where('show_on_site',1)
+            ->where('count','!=',0)->where('price','!=',0)->with("images");
         if($request->category_id) {
             $products->where('category_id',$request->category_id);
         }
