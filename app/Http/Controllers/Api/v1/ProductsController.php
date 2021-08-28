@@ -119,7 +119,7 @@ class ProductsController extends Controller
         if($request->p_id=='parent') {
             $category->p_id = null;
         }else {
-            $category->pd_id = $request->p_id;
+            $category->p_id = $request->p_id;
         }
         $category->save();
         return response()->json(['message' => "Успешно отредактирован"], 200);
@@ -537,9 +537,9 @@ class ProductsController extends Controller
     }
 
     public function getOrders(Request $request) {
-//        $orders = Order::query()->orderBy("created_at","DESC")->get();
-        $ordered = Ordered::query()->with('orders')->orderBy("created_at","DESC")->get();
-        return $ordered;
+        $orders = Order::query()->orderBy("created_at","DESC")->get();
+//        $ordered = Ordered::query()->with('orders')->orderBy("created_at","DESC")->get();
+        return $orders;
     }
 
     public  function setShowProduct(Request $request) {
