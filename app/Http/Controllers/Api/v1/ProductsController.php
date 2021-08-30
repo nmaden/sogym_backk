@@ -517,12 +517,6 @@ class ProductsController extends Controller
     public function send_telegram($id,$message)
     {
         $token = '1760765822:AAFp-bXa3wiHbeVm2fi2eT1TCyUkU6SmrHU';
-//        $url='https://api.telegram.org/bot'.$token.'/sendMessage';$data=array('chat_id'=>$id,'text'=>$message);
-//        $options=array('http'=>array('method'=>'POST','header'=>"Content-Type:application/x-www-form-urlencoded\r\n",'content'=>http_build_query($data),),);
-//        $context=stream_context_create($options);
-//        $result=file_get_contents($url,false,$context);
-//        return $result;
-
         $url = "https://api.telegram.org/bot" . $token . "/sendMessage?chat_id=" .$id ;
         $url = $url . "&text=" . urlencode($message);
         $ch = curl_init();
@@ -537,7 +531,7 @@ class ProductsController extends Controller
     }
 
     public function getOrders(Request $request) {
-        $orders = Order::query()->orderBy("created_at","DESC")->get();
+        $orders = Order::query()->where('sended',0)->orderBy("created_at","DESC")->get();
 //        $ordered = Ordered::query()->with('orders')->orderBy("created_at","DESC")->get();
         return $orders;
     }
