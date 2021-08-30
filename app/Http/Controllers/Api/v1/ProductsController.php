@@ -565,8 +565,8 @@ class ProductsController extends Controller
 
 
     public function senderOrdersForC(Request $request) {
-//        $orders = Order::query()->orderBy("created_at","DESC")->get();
-        $orders =  Order::with('info')->get();
+//        $orders = Order::query().->orderBy("created_at","DESC")->get();
+        $orders =  Order::where('sended',0)->with('info')->get();
         for ($i=0; $i<count($orders); $i++) {
             $orders[$i]['info']['delivery_type'] = $orders[$i]['info']['delivery_type']==1?'Доставка':'Самовывоз';
             if($orders[$i]['info']['delivery_type']==1) {

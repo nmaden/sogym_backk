@@ -51,7 +51,7 @@ Route::prefix('v1')->group(function () {
 
 
             Route::get('/get/order', 'Api\v1\ProductsController@getOrder');
-            Route::get('/get/orders', 'Api\v1\ProductsController@getOrders');
+//            Route::get('/get/orders', 'Api\v1\ProductsController@getOrders');
 
             Route::post('/delete/order', 'Api\v1\ProductsController@deleteOrder');
 
