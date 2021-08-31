@@ -467,7 +467,8 @@ class ProductsController extends Controller
             $good->save();
         }
 
-        $this->send_message($request->name.' '.$request->address,$request->phone_number.' | Заказано: '.$order_text);
+        $message = urlencode($request->name.'\n '.'Адрес:'.$request->address.'\n Телефон'.$request->phone_number.' \n Заказано: '.$order_text);
+        $this->send_message($message);
 
         $payment_info = [
             "merchant_id"=>538709,
@@ -505,9 +506,7 @@ class ProductsController extends Controller
         // return response()->json(['url' => 'https://api.paybox.money/payment.php?'.$query], 200);
         return response()->json(['message' => 'Ваш заказ успешно создано'], 200);
     }
-    public   function send_message($user,$phone) {
-
-        $message = urlencode('Сегодня: '.date("Y-m-d").'\n  ИНТЕРНЕТ МАГАЗИН Поступило новый заказ от заказщика  '.$user.'\n   Телефон:'.$phone);
+    public   function send_message($message) {
          $this->send_telegram(281900870,$message); // I
          $this->send_telegram(719817594,$message); // Kenes
         //   $this->send_telegram(891800093,$message); // Wamwi
