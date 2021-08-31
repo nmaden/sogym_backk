@@ -444,7 +444,7 @@ class ProductsController extends Controller
         $total_amount = 0;
         $order_text = '';
         for ($i=0; $i < count($request->orders); $i++) {
-            $order_text = $order_text.$request->orders[$i]["name_product"].' количество: '.$request->orders[$i]["order_count"].' - цена: '.$request->orders[$i]["price"].'тг  ';
+            $order_text = PHP_EOL.'Название товара: '.$order_text.$request->orders[$i]["name_product"].PHP_EOL.'Количество: '.$request->orders[$i]["order_count"].' шт'.PHP_EOL.'Цена: '.$request->orders[$i]["price"].'тг  ';
             $product = new Order();
             $product->order_id = $ordered_main->id;
             $product->name = $request->orders[$i]["name_product"];
@@ -466,8 +466,10 @@ class ProductsController extends Controller
 
             $good->save();
         }
-
-        $message = urlencode($request->name.'\n '.'Адрес:'.$request->address.'\n Телефон'.$request->phone_number.' \n Заказано: '.$order_text);
+        $message = 'Сегодня: '.Carbon::now()->format('d.m.Y h:i').' поступило заказ '.PHP_EOL.'Заказщик: '.$request->name.PHP_EOL.'Самовывоз'.PHP_EOL.'Телефон: '.$request->phone_number.PHP_EOL.'Заказано: '.$order_text;
+        if($ordered_main->delivery_type==1) {
+            $message = 'Сегодня: '.date('d-m-Y').' поступило заказ '.PHP_EOL.'Заказщик: '.$request->name.PHP_EOL.'Адрес: '.$request->address.PHP_EOL.'Телефон: '.$request->phone_number.PHP_EOL.'Заказано: '.$order_text;
+        }
         $this->send_message($message);
 
         $payment_info = [
