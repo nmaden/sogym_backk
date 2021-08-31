@@ -540,9 +540,9 @@ class ProductsController extends Controller
     }
 
     public function getOrders(Request $request) {
-        $orders = Order::query()->orderBy("created_at","DESC")->get();
-//        $ordered = Ordered::query()->with('orders')->orderBy("created_at","DESC")->get();
-        return $orders;
+//        $orders = Order::query()->orderBy("created_at","DESC")->get();
+        $ordered = Ordered::query()->with('orders')->orderBy("created_at","DESC")->get();
+        return $ordered;
     }
 
     public  function setShowProduct(Request $request) {
