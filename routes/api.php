@@ -40,7 +40,10 @@ Route::prefix('v1')->group(function () {
             Route::post('/create/category', 'Api\v1\ProductsController@createCategory');
 
 
-            Route::post('/delete/product', 'Api\v1\ProductsController@deleteProduct');
+            Route::get('/delete/product/admin', 'Api\v1\ProductsController@deleteProductAdmin');
+
+
+            Route::post('/delete/product', 'Api\v1\ProductsController@deleteProductAdmin');
 
             Route::post('/delete/product/duplicate', 'Api\v1\ProductsController@deleteProductDuplicate');
 
