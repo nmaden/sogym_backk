@@ -94,6 +94,9 @@ Route::prefix('v1')->group(function () {
 
 
 
+
+     Route::get('/guest/get/spec', 'Api\v1\ProductsController@getSpec');
+
     Route::get('/guest/get/products', 'Api\v1\ProductsController@getProducts');
 
     Route::post('/get/product/description', 'Api\v1\ProductsController@getProductDescription');

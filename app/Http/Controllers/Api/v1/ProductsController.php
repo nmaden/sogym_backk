@@ -114,7 +114,7 @@ class ProductsController extends Controller
     }
     public  function getSpec() {
         $products =  ProductDuplicate::query()->with("images")
-            ->where("c_id", '')
+            ->where("c_id", '00000006332')
             ->where('count','!=',0)
             ->where('price','!=',0)->paginate(8);
         return $products;
