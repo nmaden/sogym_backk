@@ -107,8 +107,9 @@ class ProductsController extends Controller
     }
     public function searchProduct(Request $request) {
         $products =  ProductDuplicate::query()->with("images")
+            ->whereLike("name_product", strtolower($request->name))
             ->where('count','!=',0)
-            ->where('price','!=',0)->where("name_product", 'like', '%'.$request->name.'%')->paginate(8);
+            ->where('price','!=',0)->paginate(8);
         return $products;
     }
 
