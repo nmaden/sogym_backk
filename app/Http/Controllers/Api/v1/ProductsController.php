@@ -507,7 +507,7 @@ class ProductsController extends Controller
     }
     public   function send_message($user,$phone) {
 
-        $message = 'Сегодня: '.date("Y-m-d").' ИНТЕРНЕТ МАГАЗИН Поступило новый заказ от заказщика '.$user.' - '.$phone;
+        $message = urlencode('Сегодня: '.date("Y-m-d").'\n  ИНТЕРНЕТ МАГАЗИН Поступило новый заказ от заказщика  '.$user.'\n   Телефон:'.$phone);
          $this->send_telegram(281900870,$message); // I
          $this->send_telegram(719817594,$message); // Kenes
         //   $this->send_telegram(891800093,$message); // Wamwi
@@ -517,7 +517,7 @@ class ProductsController extends Controller
     public function send_telegram($id,$message)
     {
         $token = '1760765822:AAFp-bXa3wiHbeVm2fi2eT1TCyUkU6SmrHU';
-        $url = "https://api.telegram.org/bot" . $token . "/sendMessage?chat_id=" .$id ;
+        $url = "https://api.telegram.org/bot" . $token . "/sendMessage?chat_id=" .$id;
         $url = $url . "&text=" . urlencode($message);
         $ch = curl_init();
         $optArray = array(
