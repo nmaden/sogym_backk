@@ -15,6 +15,7 @@ use App\Models\Product;
 use App\Models\ProductDuplicate;
 use App\Models\User;
 use App\Models\Banner;
+use App\Models\Information;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use File;
@@ -22,7 +23,40 @@ use Illuminate\Support\Str;
 use NotificationChannels\Telegram\TelegramMessage;
 class ProductsController extends Controller
 {
+    public function getInfo(Request $request) {
+        if($request->id!='') {
+            $informations =  Information::where('id',$request->id)->get();
+        }else {
+            $informations =  Information::get();
+        }
+        return $informations;
+    }
+   
+    public function createInfo(Request $request) {
+            $information = new Information();
+            $information->title = $request->title;
+            $information->description = $request->description;
+            $information->save();
+            return response()->json(['message' => "Успешно сохранен"], 200);
+    }
+    public function editInfo(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+        $information = Information::query()->where('id',$request->id)->first();
+        $information->title = $request->title;
+        $information->description = $request->description;
+        $information->save();
+        return response()->json(['message' => "Успешно сохранен"], 200);
+    }
 
+
+    public function  getHotels(Request $request) {
+        return \DB::table('transactions')->get();
+    }
     public  function deleteBanner(Request $request) {
         $validator = Validator::make($request->all(), [
             'id' => 'required'
@@ -87,7 +121,7 @@ class ProductsController extends Controller
             $product->name_product = $products[$i]['name_product'];
             $product->c_id = $products[$i]['c_id'];
             $product->article = $products[$i]['article'];
-            $product->category_id = $products[$i]['category_id'];
+            // $product->category_id = $products[$i]['category_id'];
             $product->price = $products[$i]['price'];
             $product->count = $products[$i]['count'];
             $product->price_sale = (isset($products[$i]['price_sale']))?$products[$i]['price_sale']:'';
@@ -538,6 +572,9 @@ class ProductsController extends Controller
     public   function send_message($message) {
          $this->send_telegram(281900870,$message); // I
          $this->send_telegram(719817594,$message); // Kenes
+         $this->send_telegram(1061025347,$message); // Aigerim
+
+
         //   $this->send_telegram(891800093,$message); // Wamwi
         //   $this->send_telegram(635324651,$message); // Menedjer
 

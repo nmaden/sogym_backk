@@ -18,6 +18,12 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     Route::middleware('auth:api')->group(function () {
 
+            Route::post('/create/info', 'Api\v1\ProductsController@createInfo');
+            Route::post('/update/info', 'Api\v1\ProductsController@editInfo');
+            Route::get('/get/info', 'Api\v1\ProductsController@getInfo');
+
+
+
             Route::post('/create/product', 'Api\v1\ProductsController@createProduct');
             Route::post('/get/product', 'Api\v1\ProductsController@getProduct');
             Route::get('/get/products', 'Api\v1\ProductsController@getProducts');
@@ -95,10 +101,14 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/get/duplicate/products', 'Api\v1\ProductsController@getDuplicateProducts');
 
+    Route::get('/get/hotels', 'Api\v1\ProductsController@getHotels');
+
+    Route::get('/guest/get/info', 'Api\v1\ProductsController@getInfo');
 
 
+    Route::post('/guest/create/info', 'Api\v1\ProductsController@createInfo');
 
-     Route::get('/guest/get/spec', 'Api\v1\ProductsController@getSpec');
+    Route::get('/guest/get/spec', 'Api\v1\ProductsController@getSpec');
 
     Route::get('/guest/get/products', 'Api\v1\ProductsController@getProducts');
 
