@@ -31,7 +31,6 @@ class ProductsController extends Controller
         }
         return $informations;
     }
-   
     public function createInfo(Request $request) {
             $information = new Information();
             $information->title = $request->title;
@@ -52,8 +51,6 @@ class ProductsController extends Controller
         $information->save();
         return response()->json(['message' => "Успешно сохранен"], 200);
     }
-
-
     public function  getHotels(Request $request) {
         return \DB::table('transactions')->get();
     }
@@ -205,7 +202,7 @@ class ProductsController extends Controller
         return response()->json(['message' => "Успешно удален"], 200);
     }
     public function getProductsAdminByCategory(Request $request) {
-        $products =  ProductDuplicate::query()->with("images")->where("category_id",$request->category_id)->get();
+        $products =  Product::query()->with("images")->where("category_id",$request->category_id)->get();
         return $products;
     }
 
@@ -266,12 +263,12 @@ class ProductsController extends Controller
         return response()->json(['message' => "Рисонок успешно удален"], 200);
     }
     public function updateProduct(Request $request) {
-        $product = ProductDuplicate::query()->where("id",$request->id)->first();
-        $product->name_product = $request->name_product;
+        $product = Product::query()->where("id",$request->id)->first();
+        $product->name = $request->name;
         $product->description = $request->description;
         $product->price = $request->price;
         $product->count = $request->count;
-        $product->add_size = $request->size;
+        // $product->add_size = $request->size;
         $product->category_id = $request->category_id;
 //        $product->sale = $request->sale;
 //        $product->new = $request->new;
@@ -362,12 +359,12 @@ class ProductsController extends Controller
     public function getProductDescription(Request $request) {
 
 //        where("category_id",$request->category_id)->
-        $description =  ProductDuplicate::query()->where("id",$request->product_id)->where('show_on_site',1)->with("images")->first();
+        $description =  Product::query()->where("id",$request->product_id)->with("images")->first();
         return $description;
     }
     public function getProducts(Request $request) {
-        $products = ProductDuplicate::query()->with("images")
-            ->where('show_on_site',1)
+        $products = Product::query()->with("images")
+       
             ->where('price','!=',0)
             ->where('count','!=',0)
             ->paginate(8);
