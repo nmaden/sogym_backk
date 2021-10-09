@@ -41,8 +41,8 @@ Route::prefix('v1')->group(function () {
             Route::post('/find/product', 'Api\v1\ProductsController@findProduct');
 
 
-        Route::post('/update/category', 'Api\v1\ProductsController@updateCategory');
-            Route::post('/delete/category', 'Api\v1\ProductsController@deleteCategory');
+            Route::post('/update/category', 'Api\v1\ProductsController@updateCategory');
+            Route::get('/delete/category', 'Api\v1\ProductsController@deleteCategory');
             Route::post('/create/category', 'Api\v1\ProductsController@createCategory');
 
 

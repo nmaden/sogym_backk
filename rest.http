@@ -283,13 +283,13 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpI
 
 
 ###
-POST  http://127.0.0.1:8000/api/v1/register
+POST  https://api.asia.frezerovka04.kz/api/v1/register
 Content-Type: application/json
 
 {
     "name": "Администратор системы",
-    "email": "kenes2@gmail.com",
-    "password": "1234567"
+    "email": "asiacityfood@gmail.com",
+    "password": "nurcity"
 }
 
 

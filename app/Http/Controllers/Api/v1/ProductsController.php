@@ -22,7 +22,9 @@ use File;
 use Illuminate\Support\Str;
 use NotificationChannels\Telegram\TelegramMessage;
 class ProductsController extends Controller
-{
+{   
+
+
     public function getInfo(Request $request) {
         if($request->id!='') {
             $informations =  Information::where('id',$request->id)->get();
@@ -181,6 +183,12 @@ class ProductsController extends Controller
             return response()->json(['error' => $validator->messages()], 422);
         }
 
+        $category_image = Categories::query()->where("id",$request->id)->first();
+
+        if(file_exists(public_path($category_image->image_path))){
+            unlink(public_path($category_image->image_path));
+        };
+
         $category =  Categories::query()->where("id",$request->id)->delete();
         $childs =  Categories::query()->where("p_id",$request->id)->get();
 
@@ -216,6 +224,16 @@ class ProductsController extends Controller
         $category = new Categories();
         $category->name = $request->name;
         $category->p_id = $request->p_id;
+        $this->validate($request, [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1048',
+        ]);
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $path = 'storage/categories/';
+            $name= 'category-' . time().'.'.$image->getClientOriginalExtension();
+            $image->move($path, $name);
+            $category->image_path = '/' . $path . $name;    
+        }
         $category->save();
         return response()->json(['message' => "Успешно сохранен"], 200);
     }
