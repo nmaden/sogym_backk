@@ -139,7 +139,7 @@ class ProductsController extends Controller
         return $user;
     }
     public function searchProduct(Request $request) {
-        $products =  ProductDuplicate::query()->with("images")
+        $products =  Product::query()->with("images")
             ->where("name_product", 'like', '%'.$request->name.'%')
             ->where('count','!=',0)
             ->where('price','!=',0)->paginate(8);
@@ -416,7 +416,7 @@ class ProductsController extends Controller
     }
 
     public function getProductsByCategory(Request $request) {
-        $products =  ProductDuplicate::query()
+        $products =  Product::query()
             ->where('show_on_site',1)
             ->where('count','!=',0)->where('price','!=',0)->with("images");
         if($request->category_id) {
