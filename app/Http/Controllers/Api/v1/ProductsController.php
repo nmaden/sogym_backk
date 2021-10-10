@@ -542,7 +542,7 @@ class ProductsController extends Controller
             $order_text = PHP_EOL.'Название товара: '.$order_text.$request->orders[$i]["name_product"].PHP_EOL.'Количество: '.$request->orders[$i]["order_count"].' шт'.PHP_EOL.'Цена: '.$request->orders[$i]["price"].'тг  ';
             $product = new Order();
             $product->order_id = $ordered_main->id;
-            $product->name = $request->orders[$i]["name_product"];
+            $product->name = $request->orders[$i]["name"];
 //            $product->description = $request->orders[$i]->description?$request->orders[$i]["description"]:'';
             $product->price =  $request->orders[$i]["price"];
             $product->count = $request->orders[$i]["order_count"];
@@ -555,12 +555,13 @@ class ProductsController extends Controller
             $total_amount = $total_amount+$request->orders[$i]["price"];
             $product->save();
 
-            $good = ProductDuplicate::where('id',$request->orders[$i]['id'])->first();
+            $good = Product::where('id',$request->orders[$i]['id'])->first();
 
 //            $good->count=$good->count-$request->orders[$i]["order_count"];
-
             $good->save();
         }
+
+
         $message = 'Сегодня: '.Carbon::now()->format('d.m.Y h:i').' поступило заказ '.PHP_EOL.'Заказщик: '.$request->name.PHP_EOL.'Самовывоз'.PHP_EOL.'Телефон: '.$request->phone_number.PHP_EOL.'Заказано: '.$order_text;
         if($ordered_main->delivery_type==1) {
             $message = 'Сегодня: '.date('d-m-Y').' поступило заказ '.PHP_EOL.'Заказщик: '.$request->name.PHP_EOL.'Адрес: '.$request->address.PHP_EOL.'Телефон: '.$request->phone_number.PHP_EOL.'Заказано: '.$order_text;
@@ -605,8 +606,8 @@ class ProductsController extends Controller
     }
     public   function send_message($message) {
          $this->send_telegram(281900870,$message); // I
-         $this->send_telegram(719817594,$message); // Kenes
-         $this->send_telegram(1061025347,$message); // Aigerim
+        //  $this->send_telegram(719817594,$message); // Kenes
+        //  $this->send_telegram(1061025347,$message); // Aigerim
 
 
         //   $this->send_telegram(891800093,$message); // Wamwi
