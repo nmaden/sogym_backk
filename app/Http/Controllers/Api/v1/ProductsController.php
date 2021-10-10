@@ -539,7 +539,7 @@ class ProductsController extends Controller
         $total_amount = 0;
         $order_text = '';
         for ($i=0; $i < count($request->orders); $i++) {
-            $order_text = PHP_EOL.'Название товара: '.$order_text.$request->orders[$i]["name_product"].PHP_EOL.'Количество: '.$request->orders[$i]["order_count"].' шт'.PHP_EOL.'Цена: '.$request->orders[$i]["price"].'тг  ';
+            $order_text = PHP_EOL.'Название товара: '.$order_text.$request->orders[$i]["name"].PHP_EOL.'Количество: '.$request->orders[$i]["order_count"].' шт'.PHP_EOL.'Цена: '.$request->orders[$i]["price"].'тг  ';
             $product = new Order();
             $product->order_id = $ordered_main->id;
             $product->name = $request->orders[$i]["name"];
