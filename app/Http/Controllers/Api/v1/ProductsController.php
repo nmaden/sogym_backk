@@ -15,6 +15,7 @@ use App\Models\Product;
 use App\Models\ProductDuplicate;
 use App\Models\User;
 use App\Models\Banner;
+use App\Models\Bonus;
 use App\Models\Information;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -23,6 +24,75 @@ use Illuminate\Support\Str;
 use NotificationChannels\Telegram\TelegramMessage;
 class ProductsController extends Controller
 {   
+
+    public function createBonus(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required',
+            'name' => 'required',
+            'amount' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+        $bonus = new Bonus();
+
+        $bonus->phone = $request->phone;
+        $bonus->name = $request->name;
+        $bonus->amount = $request->amount;
+        $bonus->bonus = $request->amount*0.03;
+        $bonus->save();
+
+        return response()->json(['message' => "Успешно сохранен"], 200);
+    }
+    public function getBonuses() {
+        return   Bonus::query()->get();
+    }
+
+    public function addBonus(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required',
+            'amount' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+        $bonus =  Bonus::where('phone',$request->phone)->first();
+        $bonus->amount = $bonus->amount.' '.$request->amount;
+        $bonus->bonus = $request->amount*0.03;
+        $bonus->save();
+
+        return response()->json(['message' => "Успешно сохранен"], 200);
+    }
+
+    public function useBonus(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+        $bonus =  Bonus::where('phone',$request->phone)->first();
+        $bonus->bonus = 0;
+        $bonus->save();
+
+        return response()->json(['message' => "Бонус успешно потрачено"], 200);
+    }
+
+    public function getBonus(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+        $bonus =  Bonus::where('phone',$request->phone)->first();
+        if($bonus) {
+            return response()->json(['bonus' => $bonus->bonus==0 ||  !$bonus->bonus?'zero':$bonus->bonus], 200);
+        }else {
+            return response()->json(['message' => 'Не найдено'], 200);
+        }
+    }
 
 
     public function getInfo(Request $request) {

@@ -18,6 +18,12 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     Route::middleware('auth:api')->group(function () {
 
+
+            Route::post('/create/bonus', 'Api\v1\ProductsController@createBonus');
+            Route::post('/add/bonus', 'Api\v1\ProductsController@addBonus');
+            Route::post('/use/bonus', 'Api\v1\ProductsController@useBonus');
+            Route::get('/get/bonuses', 'Api\v1\ProductsController@getBonuses');
+
             Route::post('/create/info', 'Api\v1\ProductsController@createInfo');
             Route::post('/update/info', 'Api\v1\ProductsController@editInfo');
             Route::get('/get/info', 'Api\v1\ProductsController@getInfo');
@@ -97,6 +103,8 @@ Route::prefix('v1')->group(function () {
             Route::post('/fill/products', 'Api\v1\ProductsController@fillProduct');
             Route::post('/delete/all/products', 'Api\v1\ProductsController@deleteDuplicateProducts');
     });
+
+    Route::get('/get/bonus', 'Api\v1\ProductsController@getBonus');
     Route::get('/get/banners', 'Api\v1\ProductsController@getBanners');
 
     Route::get('/get/duplicate/products', 'Api\v1\ProductsController@getDuplicateProducts');
