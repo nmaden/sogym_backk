@@ -549,7 +549,7 @@ class ProductsController extends Controller
 //            $product->size = $request->orders[$i]["size"]?$request->orders[$i]["size"]:'';
             $product->category_id =$request->orders[$i]['category_id'];
 
-            $product->c_id = $request->orders[$i]['c_id'];
+            $product->c_id = '1';
 
             $product->payed = false;
             $total_amount = $total_amount+$request->orders[$i]["price"];
