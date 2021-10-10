@@ -157,11 +157,26 @@ class ProductsController extends Controller
         $category =  Categories::query()->where("id",$request->id)->first();
         $category->name = $request->name;
 
-        if($request->p_id=='parent') {
-            $category->p_id = null;
-        }else {
-            $category->p_id = $request->p_id;
+        // if($request->p_id=='parent') {
+        //     $category->p_id = null;
+        // }else {
+        //     $category->p_id = $request->p_id;
+        // }
+
+     
+   
+        if ($request->hasFile('image')) {
+            if(file_exists(public_path($category->image_path))){
+                unlink(public_path($category->image_path));
+            };
+            $image = $request->file('image');
+            $path = 'storage/categories/';
+            $name= 'category-' . time().'.'.$image->getClientOriginalExtension();
+            $image->move($path, $name);
+            $category->image_path = '/' . $path . $name;    
         }
+
+        
         $category->save();
         return response()->json(['message' => "Успешно отредактирован"], 200);
     }
@@ -224,6 +239,8 @@ class ProductsController extends Controller
         $category = new Categories();
         $category->name = $request->name;
         $category->p_id = $request->p_id;
+
+
         $this->validate($request, [
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1048',
         ]);
