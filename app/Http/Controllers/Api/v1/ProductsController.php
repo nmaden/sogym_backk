@@ -166,7 +166,7 @@ class ProductsController extends Controller
      
    
         if ($request->hasFile('image')) {
-            if(file_exists(public_path($category->image_path))){
+            if($category->image_path!='' && file_exists(public_path($category->image_path))){
                 unlink(public_path($category->image_path));
             };
             $image = $request->file('image');
