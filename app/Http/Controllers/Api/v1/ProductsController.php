@@ -258,6 +258,10 @@ class ProductsController extends Controller
        $categories =  Categories::query()->where("p_id",null)->with("children")->get();
        return json_encode($categories,JSON_UNESCAPED_UNICODE);
     }
+    public function getAllCategories(Request $request) {
+        $categories =  Categories::query()->get();
+        return json_encode($categories,JSON_UNESCAPED_UNICODE);
+     }
     public function getChilds($id,$level,$result) {
         $categories =  Categories::query()->where('p_id',$id)->get();
         $obj = [
