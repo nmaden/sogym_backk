@@ -124,7 +124,7 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/get/categories', 'Api\v1\ProductsController@getCategories');
 
-    Route::get('/get/all/categories', 'Api\v1\ProductsController@getCategories');
+    Route::get('/get/all/categories', 'Api\v1\ProductsController@getAllCategories');
 
     Route::post('/guest/get/products/by/category', 'Api\v1\ProductsController@getProductsByCategory');
 
