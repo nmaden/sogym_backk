@@ -410,6 +410,14 @@ class ProductsController extends Controller
     }
     public function createProduct(Request $request) {
 
+        $validator = Validator::make($request->all(), [
+            'images.*' => 'max:814',
+            'count_type'=>'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+
         $product = new Product();
         $product->name = $request->name;
         $product->description = $request->description;
@@ -424,13 +432,7 @@ class ProductsController extends Controller
         $product->article = $request->article;
         $product->save();
 
-        $validator = Validator::make($request->all(), [
-            'images.*' => 'max:1024',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 422);
-        }
-
+      
         $files = $request->file('images');
 
 
