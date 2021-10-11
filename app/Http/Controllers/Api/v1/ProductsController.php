@@ -412,7 +412,8 @@ class ProductsController extends Controller
 
         $validator = Validator::make($request->all(), [
             'images.*' => 'max:814',
-            'count_type'=>'required'
+            'count_type'=>'required',
+            'price'=>'required|integer'
         ]);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 422);
