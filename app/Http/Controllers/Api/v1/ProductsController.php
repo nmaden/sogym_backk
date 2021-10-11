@@ -371,6 +371,13 @@ class ProductsController extends Controller
         return response()->json(['message' => "Рисонок успешно удален"], 200);
     }
     public function updateProduct(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'images.*' => 'max:814',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+        
         $product = Product::query()->where("id",$request->id)->first();
         $product->name = $request->name;
         $product->description = $request->description;
@@ -384,12 +391,7 @@ class ProductsController extends Controller
         $product->count_type = $request->count_type;
         $product->save();
 
-        $validator = Validator::make($request->all(), [
-            'images.*' => 'max:1024',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 422);
-        }
+     
 
         $files = $request->file('images');
 
