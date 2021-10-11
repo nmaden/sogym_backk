@@ -363,7 +363,7 @@ class ProductsController extends Controller
     public function deleteProductImage(Request $request) {
         $product_image = ProductImage::query()->where("id",$request->id)->first();
 
-        if(file_exists(public_path($product_image->image_path))){
+        if($product_image && file_exists(public_path($product_image->image_path))){
             unlink(public_path($product_image->image_path));
             $product_image = ProductImage::query()->where("id",$request->id)->delete();
         };
@@ -477,11 +477,12 @@ class ProductsController extends Controller
     }
     public function getProducts(Request $request) {
         $products = Product::query()->with("images")
-       
             ->where('price','!=',0)
-            ->where('count','!=',0)
-            ->paginate(8);
-        return $products;
+            ->where('count','!=',0);
+        if($request->category_id) {
+            $products = $products->where('category_id',$request->category_id);
+        }            
+        return $products->paginate(10);
     }
     public function getAdminProducts(Request $request) {
         $products = Product::query()->orderBy('updated_at','DESC')->with("images")->with('category')
