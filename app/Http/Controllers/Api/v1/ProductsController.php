@@ -522,7 +522,7 @@ class ProductsController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 422);
         }
-        $product = ProductDuplicate::where('c_id',$request->c_id)->first();
+        $product = Product::where('c_id',$request->c_id)->first();
         if($product) {
             return  'true';
         }
@@ -563,7 +563,7 @@ class ProductsController extends Controller
             return response()->json(['error' => $validator->messages()], 422);
         }
 
-        $product =  ProductDuplicate::query()->where("id",$request->id)->first();
+        $product =  Product::query()->where("id",$request->id)->first();
         $product_images = ProductImage::where("product_id",$product->id)->get();
 
         if(count($product_images)!=0) {
@@ -571,7 +571,7 @@ class ProductsController extends Controller
                 $this->deleteImage($product_images[$i]->image_path,$product_images[$i]->id);
             }
         }
-        $product =  ProductDuplicate::query()->where("id",$request->id)->delete();
+        $product =  Product::query()->where("id",$request->id)->delete();
         return response()->json(['message' => "Успешно удален"], 200);
     }
     public function deleteProduct(Request $request) {
@@ -732,7 +732,7 @@ class ProductsController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 422);
         }
-        $product = ProductDuplicate::where('id',$request->id)->first();
+        $product = Product::where('id',$request->id)->first();
         $product->category_id = $request->category_id;
         $product->save();
         return response()->json(['message' => 'Категория успешно добавлено'], 200);
@@ -796,7 +796,7 @@ class ProductsController extends Controller
         }
 
         for ($i=0; $i<count($request->products); $i++) {
-            $product = ProductDuplicate::where('c_id',$request->products[$i]['c_id'])->first();
+            $product = Product::where('c_id',$request->products[$i]['c_id'])->first();
             if($product) {
                 $product->count = $request->products[$i]['count'];
                 $product->save();
