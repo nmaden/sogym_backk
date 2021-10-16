@@ -383,6 +383,7 @@ class ProductsController extends Controller
         $product->description = $request->description;
         $product->price = $request->price;
         $product->count = $request->count;
+        $product->price_sale = $request->price_sale;
         // $product->add_size = $request->size;
         $product->category_id = $request->category_id;
 //        $product->sale = $request->sale;
@@ -425,6 +426,7 @@ class ProductsController extends Controller
         $product->name = $request->name;
         $product->description = $request->description;
         $product->price = $request->price;
+        $product->price_sale = $request->price_sale;
         $product->count = $request->count;
         $product->size = $request->size;
         $product->category_id = $request->category_id;
