@@ -740,7 +740,7 @@ class ProductsController extends Controller
     }
     public function send_telegram($id,$message)
     {
-        $token = '1760765822:AAFp-bXa3wiHbeVm2fi2eT1TCyUkU6SmrHU';
+        $token = '2034414802:AAF5hZtx71Aup0dnIwN0LWwj9mHVJj6x6ME';
         $url = "https://api.telegram.org/bot" . $token . "/sendMessage?chat_id=" .$id;
         $url = $url . "&text=" . urlencode($message);
         $ch = curl_init();
