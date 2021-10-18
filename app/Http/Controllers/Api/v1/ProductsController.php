@@ -41,10 +41,20 @@ class ProductsController extends Controller
         $validator = Validator::make($request->all(), [
             'phone' => 'required',
             'name' => 'required',
-            'amount' => 'required'
+            'amount' => 'required',
+            'card_number' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 422);
+        }
+
+        $bonus =  Bonus::where('phone',$request->phone);
+        if($bonus) {
+            return response()->json(['error' =>'Ползователь существует введите другой номер телефона'], 422); 
+        }
+        $bonus =  Bonus::where('phone',$request->card_number);
+        if($bonus) {
+            return response()->json(['error' =>'Ползователь существует'], 422); 
         }
         $bonus = new Bonus();
 
@@ -102,7 +112,16 @@ class ProductsController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 422);
         }
-        $bonus =  Bonus::where('phone',$request->phone)->first();
+      
+        
+        if($request->phone!='') {
+            $bonus =  Bonus::where('phone',$request->phone)->first();
+        }
+        if($request->card_number) {
+            $bonus =  Bonus::where('card_number',$request->card_number)->first();
+        }
+
+
         if($bonus) {
             return response()->json(['bonus' => $bonus->bonus==0 ||  !$bonus->bonus?'zero':$bonus->bonus], 200);
         }else {
