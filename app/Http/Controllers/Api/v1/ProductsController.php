@@ -48,11 +48,11 @@ class ProductsController extends Controller
             return response()->json(['error' => $validator->messages()], 422);
         }
 
-        $bonus =  Bonus::where('phone',$request->phone);
+        $bonus =  Bonus::where('phone',$request->phone)->first();
         if($bonus) {
             return response()->json(['error' =>'Ползователь существует введите другой номер телефона'], 422); 
         }
-        $bonus =  Bonus::where('phone',$request->card_number);
+        $bonus =  Bonus::where('phone',$request->card_number)->first();
         if($bonus) {
             return response()->json(['error' =>'Ползователь существует'], 422); 
         }
