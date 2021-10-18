@@ -48,6 +48,7 @@ class ProductsController extends Controller
             return response()->json(['error' => $validator->messages()], 422);
         }
 
+
         $bonus =  Bonus::where('phone',$request->phone)->first();
         if($bonus) {
             return response()->json(['error' =>'Ползователь существует введите другой номер телефона'], 422); 
@@ -63,6 +64,9 @@ class ProductsController extends Controller
         $bonus->amount = $request->amount;
         $bonus->card_number = $request->card_number;
         $bonus->bonus = $request->amount*0.03;
+        $bonus->pay_date = Carbon::now();
+
+        
         $bonus->save();
 
         return response()->json(['message' => "Успешно сохранен"], 200);
@@ -80,7 +84,13 @@ class ProductsController extends Controller
             return response()->json(['error' => $validator->messages()], 422);
         }
         $bonus =  Bonus::where('phone',$request->phone)->first();
+
+
         $bonus->amount = $bonus->amount.' '.$request->amount;
+
+        $bonus->pay_date = $bonus->pay_date.' '. Carbon::now();
+
+
         $bonus->bonus = $request->amount*0.03;
         $bonus->save();
 
