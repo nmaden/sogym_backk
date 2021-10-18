@@ -116,14 +116,10 @@ class ProductsController extends Controller
     }
 
     public function getBonus(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'phone' => 'required'
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 422);
+        if($request->phone=='' && $request->card_number=='' ) {
+            return response()->json(['error' => 'Введите телефон или номер карты'], 422);
         }
-      
-        
+
         if($request->phone!='') {
             $bonus =  Bonus::where('phone',$request->phone)->first();
         }
