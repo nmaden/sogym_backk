@@ -23,7 +23,18 @@ use File;
 use Illuminate\Support\Str;
 use NotificationChannels\Telegram\TelegramMessage;
 class ProductsController extends Controller
-{   
+{       
+
+    public function deleteBonus(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+        $bonus = Bonus::where('id',$request->id)->delete();
+        return response()->json(['message' => "Успешно удалено"], 200);
+    }
 
     public function createBonus(Request $request) {
 
@@ -40,6 +51,7 @@ class ProductsController extends Controller
         $bonus->phone = $request->phone;
         $bonus->name = $request->name;
         $bonus->amount = $request->amount;
+        $bonus->card_number = $request->card_number;
         $bonus->bonus = $request->amount*0.03;
         $bonus->save();
 
@@ -66,13 +78,17 @@ class ProductsController extends Controller
     }
 
     public function useBonus(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'phone' => 'required'
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 422);
+        if($request->phone=='' && $request->card_number=='' ) {
+            return response()->json(['error' => 'Введите телефон или номер карты'], 422);
         }
-        $bonus =  Bonus::where('phone',$request->phone)->first();
+
+        if($request->phone!='') {
+            $bonus =  Bonus::where('phone',$request->phone)->first();
+        }
+        else if($request->card_number!='') {
+            $bonus =  Bonus::where('card_number',$request->card_number)->first();
+        }
+       
         $bonus->bonus = 0;
         $bonus->save();
 

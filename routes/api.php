@@ -20,6 +20,7 @@ Route::prefix('v1')->group(function () {
 
 
             Route::post('/create/bonus', 'Api\v1\ProductsController@createBonus');
+            Route::post('/delete/bonus', 'Api\v1\ProductsController@deleteBonus');
             Route::post('/add/bonus', 'Api\v1\ProductsController@addBonus');
             Route::post('/use/bonus', 'Api\v1\ProductsController@useBonus');
             Route::get('/get/bonuses', 'Api\v1\ProductsController@getBonuses');
