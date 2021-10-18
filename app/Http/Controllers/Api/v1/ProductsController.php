@@ -234,7 +234,11 @@ class ProductsController extends Controller
             // $product->category_id = $products[$i]['category_id'];
             $product->price = $products[$i]['price'];
             $product->count = $products[$i]['count'];
-            $product->price_sale = (isset($products[$i]['price_sale']))?$products[$i]['price_sale']:'';
+
+            if(isset($products[$i]['price_sale']) && $products[$i]['price_sale']!='') {
+                $product->price_sale = $products[$i]['price_sale'];
+            }
+            // $product->price_sale = (isset($products[$i]['price_sale']))?$products[$i]['price_sale']:null;
             $product->percent = (isset($products[$i]['percent']))?$products[$i]['percent']:'';
             $product->save();
         }
