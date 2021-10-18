@@ -729,7 +729,8 @@ class ProductsController extends Controller
     }
     public   function send_message($message) {
          $this->send_telegram(281900870,$message); // I
-        //  $this->send_telegram(719817594,$message); // Kenes
+         $this->send_telegram(546286304,$message); // Wygila
+         $this->send_telegram(2091260232,$message); // Nurbolat
         //  $this->send_telegram(1061025347,$message); // Aigerim
 
 
