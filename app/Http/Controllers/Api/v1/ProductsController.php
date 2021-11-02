@@ -694,7 +694,10 @@ class ProductsController extends Controller
         if($ordered_main->delivery_type==1) {
             $message = 'Сегодня: '.date('d-m-Y').' поступило заказ '.PHP_EOL.'Заказщик: '.$request->name.PHP_EOL.'Адрес: '.$request->address.PHP_EOL.'Телефон: '.$request->phone_number.PHP_EOL.'Заказано: '.$resultss;
         }
-        $this->send_message($message);
+        // $this->send_message($message);
+
+        \App\Jobs\DepartureSend::dispatch($message);
+
 
         // $payment_info = [
         //     "merchant_id"=>538709,
