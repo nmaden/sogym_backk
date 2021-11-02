@@ -657,7 +657,7 @@ class ProductsController extends Controller
         $ordered_main->phone =$request->phone_number;
         $ordered_main->address = $request->delivery_type==1?$request->address:'';
         $ordered_main->delivery_type = $request->delivery_type;
-        $ordered_main->save();
+        // $ordered_main->save();
 
         $total_amount = 0;
         $order_text = '';
