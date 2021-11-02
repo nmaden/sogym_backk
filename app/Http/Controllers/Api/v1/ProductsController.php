@@ -696,7 +696,7 @@ class ProductsController extends Controller
         }
         // $this->send_message($message);
 
-        \App\Jobs\DepartureSend::dispatch($message);
+        \App\Jobs\TelegramJob::dispatch($message);
 
 
         // $payment_info = [
