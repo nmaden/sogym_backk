@@ -661,8 +661,13 @@ class ProductsController extends Controller
 
         $total_amount = 0;
         $order_text = '';
+
+        $resultss = '';
         for ($i=0; $i < count($request->orders); $i++) {
-            $order_text = PHP_EOL.'Название товара: '.$order_text.$request->orders[$i]["name"].PHP_EOL.'Количество: '.$request->orders[$i]["order_count"].' шт'.PHP_EOL.'Цена: '.$request->orders[$i]["price"].'тг  ';
+            $order_text = PHP_EOL.'Название товара: '.$request->orders[$i]["name"].PHP_EOL.'Количество: '.$request->orders[$i]["order_count"].' шт'.PHP_EOL.'Цена: '.$request->orders[$i]["price"].'тг  ';
+
+            $resultss = $resultss.$order_text;
+            $order_text = '';
             $product = new Order();
             $product->order_id = $ordered_main->id;
             $product->name = $request->orders[$i]["name"];
@@ -685,9 +690,9 @@ class ProductsController extends Controller
         }
 
 
-        $message = 'Сегодня: '.Carbon::now()->format('d.m.Y h:i').' поступило заказ '.PHP_EOL.'Заказщик: '.$request->name.PHP_EOL.'Самовывоз'.PHP_EOL.'Телефон: '.$request->phone_number.PHP_EOL.'Заказано: '.$order_text;
+        $message = 'Сегодня: '.Carbon::now()->format('d.m.Y h:i').' поступило заказ '.PHP_EOL.'Заказщик: '.$request->name.PHP_EOL.'Самовывоз'.PHP_EOL.'Телефон: '.$request->phone_number.PHP_EOL.'Заказано: '.$resultss;
         if($ordered_main->delivery_type==1) {
-            $message = 'Сегодня: '.date('d-m-Y').' поступило заказ '.PHP_EOL.'Заказщик: '.$request->name.PHP_EOL.'Адрес: '.$request->address.PHP_EOL.'Телефон: '.$request->phone_number.PHP_EOL.'Заказано: '.$order_text;
+            $message = 'Сегодня: '.date('d-m-Y').' поступило заказ '.PHP_EOL.'Заказщик: '.$request->name.PHP_EOL.'Адрес: '.$request->address.PHP_EOL.'Телефон: '.$request->phone_number.PHP_EOL.'Заказано: '.$resultss;
         }
         $this->send_message($message);
 
@@ -731,7 +736,11 @@ class ProductsController extends Controller
          $this->send_telegram(281900870,$message); // I
          $this->send_telegram(546286304,$message); // Wygila
          $this->send_telegram(2091260232,$message); // Nurbolat
+         $this->send_telegram(2014378443,$message); // ASIA
         //  $this->send_telegram(1061025347,$message); // Aigerim
+
+
+        
 
 
         //   $this->send_telegram(891800093,$message); // Wamwi
