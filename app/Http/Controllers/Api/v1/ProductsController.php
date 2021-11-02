@@ -696,47 +696,47 @@ class ProductsController extends Controller
         }
         $this->send_message($message);
 
-        $payment_info = [
-            "merchant_id"=>538709,
-            "secret_key_for_accepting_payment"=>"LovLbbgWuYbC4XFH",
-            "secret_key_for_payment_to_clients"=>"gdPlGtEqRq8s6hQO",
-            "mebel"=> [
-                "result_url"=>"",
-                "success_url"=>"https://frezerovka04.kz/notif",
-                "failure_url"=>"https://frezerovka04.kz/"
-            ]
-        ];
+        // $payment_info = [
+        //     "merchant_id"=>538709,
+        //     "secret_key_for_accepting_payment"=>"LovLbbgWuYbC4XFH",
+        //     "secret_key_for_payment_to_clients"=>"gdPlGtEqRq8s6hQO",
+        //     "mebel"=> [
+        //         "result_url"=>"",
+        //         "success_url"=>"https://frezerovka04.kz/notif",
+        //         "failure_url"=>"https://frezerovka04.kz/"
+        //     ]
+        // ];
 
-        $request = [
-            'pg_merchant_id'=>$payment_info['merchant_id'],
-            'pg_amount'=>$total_amount,
-            'pg_salt'=>'some text',
-            'pg_order_id'=> $ordered_main->id,
-            'pg_description'=> $total_amount.' тенге',
-            'pg_result_url'=> $payment_info['mebel']["result_url"],
-            'pg_success_url'=> $payment_info['mebel']["success_url"],
-            'pg_success_url'=> $payment_info['mebel']["failure_url"],
-            'pg_user_phone'=> "77074252290",
-            'pg_user_contact_email'=> "nurbolmaden@gmail.com",
-            'pg_testing_mode'=> 1
-        ];
+        // $request = [
+        //     'pg_merchant_id'=>$payment_info['merchant_id'],
+        //     'pg_amount'=>$total_amount,
+        //     'pg_salt'=>'some text',
+        //     'pg_order_id'=> $ordered_main->id,
+        //     'pg_description'=> $total_amount.' тенге',
+        //     'pg_result_url'=> $payment_info['mebel']["result_url"],
+        //     'pg_success_url'=> $payment_info['mebel']["success_url"],
+        //     'pg_success_url'=> $payment_info['mebel']["failure_url"],
+        //     'pg_user_phone'=> "77074252290",
+        //     'pg_user_contact_email'=> "nurbolmaden@gmail.com",
+        //     'pg_testing_mode'=> 1
+        // ];
 
-        ksort($request);
-        array_unshift($request,'payment.php');
-        array_push($request,$payment_info["secret_key_for_accepting_payment"]);
+        // ksort($request);
+        // array_unshift($request,'payment.php');
+        // array_push($request,$payment_info["secret_key_for_accepting_payment"]);
 
-        $request['pg_sig'] = md5(implode(';',$request));
-        unset($request[0],$request[1]);
-        $query = http_build_query($request);
+        // $request['pg_sig'] = md5(implode(';',$request));
+        // unset($request[0],$request[1]);
+        // $query = http_build_query($request);
 
         // return response()->json(['url' => 'https://api.paybox.money/payment.php?'.$query], 200);
         return response()->json(['message' => 'Ваш заказ успешно создано'], 200);
     }
     public   function send_message($message) {
          $this->send_telegram(281900870,$message); // I
-         $this->send_telegram(546286304,$message); // Wygila
-         $this->send_telegram(2091260232,$message); // Nurbolat
-         $this->send_telegram(2014378443,$message); // ASIA
+        //  $this->send_telegram(546286304,$message); // Wygila
+        //  $this->send_telegram(2091260232,$message); // Nurbolat
+        //  $this->send_telegram(2014378443,$message); // ASIA
         //  $this->send_telegram(1061025347,$message); // Aigerim
 
 
