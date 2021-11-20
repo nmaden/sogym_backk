@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     Route::middleware('auth:api')->group(function () {
 
+            Route::get('/get/auth/bonus', 'Api\v1\ProductsController@getBonusAuth');
 
             Route::post('/create/bonus', 'Api\v1\ProductsController@createBonus');
             Route::post('/delete/bonus', 'Api\v1\ProductsController@deleteBonus');
