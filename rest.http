@@ -288,7 +288,7 @@ Content-Type: application/json
 
 {
     "name": "Администратор системы",
-    "email": "sogym@gmail.com",
+    "email": "sogym@gmail.co",
     "password": "sogym"
 }
 
