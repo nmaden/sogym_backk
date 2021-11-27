@@ -99,7 +99,7 @@ class ProductsController extends Controller
         return response()->json(['message' => "Успешно сохранен"], 200);
     }
     public function getBonuses() {
-        return   Auth::id()==2?SogymBonus::query()->where('status','!=','deleted')->get():Bonus::query()->where('status','!=','deleted')->get();
+        return   Auth::id()==2?SogymBonus::query()->where('status',null)->get():Bonus::query()->where('status',null)->get();
     }
 
     public function addBonus(Request $request) {
