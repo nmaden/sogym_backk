@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
     Route::middleware('auth:api')->group(function () {
-
+        
+    Route::get('/get/bonus/by/id', 'Api\v1\ProductsController@getBonusById');
             Route::get('/get/auth/bonus', 'Api\v1\ProductsController@getBonusAuth');
            
 
