@@ -113,12 +113,14 @@ class ProductsController extends Controller
             where('phone', 'like', '%' . $request->search . '%')
             ->orWhere('card_number', 'like', '%' . $request->search . '%')
             ->orWhere('name', 'like', '%' . $request->search . '%')
+            ->where('status',null)
             ->get();
          
         }else {
             $bonus = Bonus::where('phone', 'like', '%' . $request->search  . '%')
             ->orWhere('card_number', 'like', '%' . $request->search . '%')
             ->orWhere('name', 'like', '%' . $request->search . '%')
+            ->where('status',null)
             ->get();
           
         }
