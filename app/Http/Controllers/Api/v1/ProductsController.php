@@ -33,10 +33,34 @@ class ProductsController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 422);
         }
-        $bonus = Bonus::where('id',$request->id)->delete();
+        if(Auth::user()->email=='sogym@gmail.com') {
+            $bonus = SogymBonus::where('id',$request->id)->first();
+            $bonus->status="deleted";
+            $bonus->save();
+        }else {
+            $bonus = SogymBonus::where('id',$request->id)->delete();
+            $bonus->status="deleted";
+            $bonus->save();
+        }
+
         return response()->json(['message' => "Успешно удалено"], 200);
     }
 
+    public function updateBonus(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+        $bonus =  Auth::user()->email=='sogym@gmail.com'?SogymBonus::where('id',$request->id)->first():Bonus::where('id',$request->id)->first();
+        if($bonus) {
+            return response()->json(['error' =>'Ползователь существует введите другой номер телефона'], 422); 
+        }
+
+        $bonus->card_number = $request->card_number;
+        $bonus->phone = $request->phone;
+        $bonus->save();
+
+        return response()->json(['message' => "Успешно сохранен"], 200);
+    }
     public function createBonus(Request $request) {
 
         $validator = Validator::make($request->all(), [
@@ -75,7 +99,7 @@ class ProductsController extends Controller
         return response()->json(['message' => "Успешно сохранен"], 200);
     }
     public function getBonuses() {
-        return   Auth::id()==2?SogymBonus::query()->get():Bonus::query()->get();
+        return   Auth::id()==2?SogymBonus::query()->where('status','!=','deleted')->get():Bonus::query()->where('status','!=','deleted')->get();
     }
 
     public function addBonus(Request $request) {
