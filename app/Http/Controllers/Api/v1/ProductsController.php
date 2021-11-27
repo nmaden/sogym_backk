@@ -54,7 +54,7 @@ class ProductsController extends Controller
         if($bonus) {
             return response()->json(['error' =>'Ползователь существует введите другой номер телефона'], 422); 
         }
-
+        $bonus->name = $request->name;
         $bonus->card_number = $request->card_number;
         $bonus->phone = $request->phone;
         $bonus->save();
@@ -101,7 +101,31 @@ class ProductsController extends Controller
     public function getBonuses() {
         return   Auth::id()==2?SogymBonus::query()->where('status',null)->get():Bonus::query()->where('status',null)->get();
     }
+    public function searchBonus(Request $request) {
+        $validator = Validator::make($request->all(), [
+            // 'phone' => 'required',
+            'search' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
 
+        if(Auth::user()->email=='sogym@gmail.com') {
+            $bonus = SogymBonus::
+            where('phone', 'like', '%' . $request->search . '%')
+            ->orWhere('card_number', 'like', '%' . $request->search . '%')
+            ->orWhere('name', 'like', '%' . $request->search . '%')
+            ->get();
+         
+        }else {
+            $bonus = Bonus::where('phone', 'like', '%' . $request->search  . '%')
+            ->orWhere('card_number', 'like', '%' . $request->search . '%')
+            ->orWhere('name', 'like', '%' . $request->search . '%')
+            ->get();
+          
+        }
+        return $bonus;
+    }
     public function addBonus(Request $request) {
         $validator = Validator::make($request->all(), [
             // 'phone' => 'required',
@@ -148,6 +172,22 @@ class ProductsController extends Controller
         return response()->json(['message' => "Бонус успешно потрачено"], 200);
     }
 
+    public function getBonusById(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+        if(Auth::user()->email=='sogym@gmail.com') {
+            $bonus = SogymBonus::where('id',$request->id)->first();
+            return $bonus;
+        }else {
+            $bonus = SogymBonus::where('id',$request->id)->delete();
+            return $bonus;
+        }
+
+    }
     public function getBonus(Request $request) {
         if($request->phone=='' && $request->card_number=='' ) {
             return response()->json(['error' => 'Введите телефон или номер карты'], 422);

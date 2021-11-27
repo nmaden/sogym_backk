@@ -19,8 +19,9 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:api')->group(function () {
 
             Route::get('/get/auth/bonus', 'Api\v1\ProductsController@getBonusAuth');
+           
 
-
+          
             Route::post('/update/bonus', 'Api\v1\ProductsController@updateBonus');
             Route::post('/create/bonus', 'Api\v1\ProductsController@createBonus');
             Route::post('/delete/bonus', 'Api\v1\ProductsController@deleteBonus');
@@ -107,7 +108,7 @@ Route::prefix('v1')->group(function () {
             Route::post('/fill/products', 'Api\v1\ProductsController@fillProduct');
             Route::post('/delete/all/products', 'Api\v1\ProductsController@deleteDuplicateProducts');
     });
-
+    Route::get('/get/bonus/by/id', 'Api\v1\ProductsController@getBonusById');
     Route::get('/get/bonus', 'Api\v1\ProductsController@getBonus');
     Route::get('/get/banners', 'Api\v1\ProductsController@getBanners');
 
