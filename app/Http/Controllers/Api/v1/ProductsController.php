@@ -49,7 +49,14 @@ class ProductsController extends Controller
     public function updateBonus(Request $request) {
         $validator = Validator::make($request->all(), [
             'id' => 'required'
-        ]);
+        ]); 
+        $data = [
+            'phone'=>'+7707425290',
+            'text'=>'Hello world'
+        ];
+        \App\Jobs\MobizonJob::dispatch($data);
+
+
         $bonus =  Auth::user()->email=='sogym@gmail.com'?SogymBonus::where('id',$request->id)->first():Bonus::where('id',$request->id)->first();
       
         $bonus->name = $request->name;
@@ -65,7 +72,7 @@ class ProductsController extends Controller
             'phone' => 'required',
             'name' => 'required',
             'amount' => 'required',
-            'card_number' => 'required'
+            // 'card_number' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 422);
@@ -183,7 +190,7 @@ class ProductsController extends Controller
             $bonus = SogymBonus::where('id',$request->id)->first();
             return $bonus;
         }else {
-            $bonus = SogymBonus::where('id',$request->id)->delete();
+            $bonus = Bonus::where('id',$request->id)->first();
             return $bonus;
         }
 
@@ -195,10 +202,20 @@ class ProductsController extends Controller
       
 
         if($request->phone!='') {
-            $bonus =  Bonus::where('phone',$request->phone)->first();
+            if(Auth::user()->email=='sogym@gmail.com') {
+                $bonus = SogymBonus::where('phone',$request->phone)->first();
+            
+            }else {
+                $bonus = Bonus::where('phone',$request->phone)->first();
+            }
         }
-        if($request->card_number) {
-            $bonus =  Bonus::where('card_number',$request->card_number)->first();
+        if($request->card_number!='') {
+            if(Auth::user()->email=='sogym@gmail.com') {
+                $bonus = SogymBonus::where('card_number',$request->card_number)->first();
+            
+            }else {
+                $bonus = Bonus::where('card_number',$request->card_number)->first();
+            }
         }
 
 
