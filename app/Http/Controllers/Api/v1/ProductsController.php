@@ -51,9 +51,7 @@ class ProductsController extends Controller
             'id' => 'required'
         ]);
         $bonus =  Auth::user()->email=='sogym@gmail.com'?SogymBonus::where('id',$request->id)->first():Bonus::where('id',$request->id)->first();
-        if($bonus) {
-            return response()->json(['error' =>'Ползователь существует введите другой номер телефона'], 422); 
-        }
+      
         $bonus->name = $request->name;
         $bonus->card_number = $request->card_number;
         $bonus->phone = $request->phone;

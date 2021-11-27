@@ -20,7 +20,8 @@ Route::prefix('v1')->group(function () {
         
     Route::get('/get/bonus/by/id', 'Api\v1\ProductsController@getBonusById');
             Route::get('/get/auth/bonus', 'Api\v1\ProductsController@getBonusAuth');
-           
+
+            Route::get('/search/bonus', 'Api\v1\ProductsController@searchBonus');
 
           
             Route::post('/update/bonus', 'Api\v1\ProductsController@updateBonus');
@@ -99,7 +100,8 @@ Route::prefix('v1')->group(function () {
 
 
             // Route::get('/get/user/me', 'Api\v1\ProductsController@me');
-
+            
+            
 
             Route::get('/get/purchase', 'Api\v1\PurchaseController@getPurchase');
             Route::get('/delete/purchase', 'Api\v1\PurchaseController@deletePurchase');
