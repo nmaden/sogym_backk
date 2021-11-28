@@ -35,7 +35,7 @@ class MobizonJob implements ShouldQueue
     public function handle()
     {
         $data   = $this->data;
-        $phone  = $this->_PhoneCorrector($data['phone']);
+        $phone  = '87074252290';
         $api    = new MobizonApi(env('MOBIZON_APP_KEY'),'api.mobizon.kz');
         // API call to send a message
         $api->call('message', 'sendSMSMessage',
