@@ -42,7 +42,6 @@ class ProductsController extends Controller
             $bonus->status="deleted";
             $bonus->save();
         }
-
         return response()->json(['message' => "Успешно удалено"], 200);
     }
 
@@ -54,7 +53,7 @@ class ProductsController extends Controller
             'phone'=>'+7707425290',
             'text'=>'Hello world'
         ];
-        \App\Jobs\MobizonJob::dispatch($data);
+        // \App\Jobs\MobizonJob::dispatch($data);
 
 
         $bonus =  Auth::user()->email=='sogym@gmail.com'?SogymBonus::where('id',$request->id)->first():Bonus::where('id',$request->id)->first();
@@ -104,7 +103,7 @@ class ProductsController extends Controller
         return response()->json(['message' => "Успешно сохранен"], 200);
     }
     public function getBonuses() {
-        return   Auth::id()==2?SogymBonus::query()->where('status',null)->get():Bonus::query()->where('status',null)->get();
+        return   Auth::id()==2?SogymBonus::query()->get():Bonus::query()->get();
     }
     public function searchBonus(Request $request) {
         $validator = Validator::make($request->all(), [
