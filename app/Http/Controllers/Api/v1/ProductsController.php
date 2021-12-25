@@ -93,7 +93,7 @@ class ProductsController extends Controller
         return response()->json(['message' => "Успешно сохранен"], 200);
     }
     public function getBonuses() {
-        return  Bonus::query()->where("user_id",Auth::id())->get();
+        return  Bonus::query()->where("user_id",Auth::id())->where('created_at','DESC')->get();
     }
 
 
