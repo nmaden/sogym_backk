@@ -97,6 +97,11 @@ Route::prefix('v1')->group(function () {
         Route::post('/create/purchase', 'Api\v1\PurchaseController@createPurchase');
             Route::get('/get/applications', 'Api\v1\PurchaseController@getApplications');
             Route::post('/accept/application', 'Api\v1\PurchaseController@acceptApplication');
+            
+
+
+            Route::get('/get/bonuses/null', 'Api\v1\ProductsController@getBonusesNull');
+            Route::get('/update/two', 'Api\v1\ProductsController@updateByIdTwo');
 
 
             Route::post('/get/user/me', 'Api\v1\ProductsController@me');

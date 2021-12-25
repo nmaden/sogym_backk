@@ -87,7 +87,7 @@ class ProductsController extends Controller
         $bonus->pay_date = Carbon::now();
         $bonus->user_id = Auth::id();
 
-        
+
         $bonus->save();
 
         return response()->json(['message' => "Успешно сохранен"], 200);
@@ -95,6 +95,21 @@ class ProductsController extends Controller
     public function getBonuses() {
         return  Bonus::query()->where("user_id",Auth::id())->get();
     }
+
+
+    public function getBonusesNull() {
+        return  Bonus::query()->where("user_id",null)->get();
+        
+    }
+
+    public function updateByIdTwo() {
+        Bonus::update([
+            'user_id'=>Auth::id()
+        ]);
+        return "changed";
+    }
+
+
     public function searchBonus(Request $request) {
         $validator = Validator::make($request->all(), [
             // 'phone' => 'required',
