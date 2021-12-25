@@ -2,7 +2,7 @@ GET http://127.0.0.1:8000/delete/sogym
 Content-Type: application/json
 
 {
-    
+
 }
 ###
 POST   http://127.0.0.1:8000/api/v1/login
@@ -275,8 +275,8 @@ Content-Type: application/json
 
 {
     "name": "Администратор системы",
-    "email": "sogym@gmail.co",
-    "password": "sogym"
+    "email": "butik_maryam.kz@gmail.com",
+    "password": "butik_maryam.kz"
 }
 
 

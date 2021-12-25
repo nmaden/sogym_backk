@@ -85,6 +85,9 @@ class ProductsController extends Controller
         $bonus->card_number = $request->card_number;
         $bonus->bonus =  Auth::id()==2?$request->amount*0.02:$request->amount*0.03;
         $bonus->pay_date = Carbon::now();
+        $bonus->user_id = Auth::id();
+
+        
         $bonus->save();
 
         return response()->json(['message' => "Успешно сохранен"], 200);
