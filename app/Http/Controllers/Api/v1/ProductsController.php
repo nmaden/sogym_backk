@@ -103,9 +103,43 @@ class ProductsController extends Controller
     }
 
     public function updateByIdTwo() {
-        Bonus::update([
+        Bonus::
+        where('id',162)
+        ->
+        update([
             'user_id'=>Auth::id()
         ]);
+        Bonus::
+        where('id',163)
+        ->delete();
+
+        Bonus::
+        where('id',164)
+        ->
+        update([
+            'user_id'=>Auth::id()
+        ]);
+        Bonus::
+        where('id',165)
+        ->
+        update([
+            'user_id'=>Auth::id()
+        ]);
+        Bonus::
+        where('id',166)
+        ->
+        update([
+            'user_id'=>Auth::id()
+        ]);
+        Bonus::
+        where('id',167)
+        ->
+        update([
+            'user_id'=>Auth::id()
+        ]);
+        Bonus::
+        where('id',168)
+        ->delete();
         return "changed";
     }
 
