@@ -100,9 +100,6 @@ Route::prefix('v1')->group(function () {
             
 
 
-            Route::get('/get/bonuses/null', 'Api\v1\ProductsController@getBonusesNull');
-            Route::get('/update/two', 'Api\v1\ProductsController@updateByIdTwo');
-
 
             Route::post('/get/user/me', 'Api\v1\ProductsController@me');
 
@@ -119,6 +116,12 @@ Route::prefix('v1')->group(function () {
             Route::post('/fill/products', 'Api\v1\ProductsController@fillProduct');
             Route::post('/delete/all/products', 'Api\v1\ProductsController@deleteDuplicateProducts');
     });
+
+
+
+
+    Route::get('/get/bonuses/null', 'Api\v1\ProductsController@getBonusesNull');
+    Route::get('/update/two', 'Api\v1\ProductsController@updateByIdTwo');
 
     Route::get('/push/bonus', 'Api\v1\ProductsController@pushBonus');
     Route::get('/get/users', 'Api\v1\ProductsController@getUsers');
