@@ -117,8 +117,11 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/push/bonus', 'Api\v1\ProductsController@pushBonus');
     Route::get('/get/users', 'Api\v1\ProductsController@getUsers');
+    Route::get('/delete/sogym', 'Api\v1\ProductsController@deleteSogym');
 
+    Route::get('/update/asia', 'Api\v1\ProductsController@updateAsia');
 
+    
     Route::get('/get/asia/bonuses', 'Api\v1\ProductsController@getAsiaBonus');
 
 

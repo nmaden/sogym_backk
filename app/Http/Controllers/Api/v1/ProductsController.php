@@ -148,6 +148,7 @@ class ProductsController extends Controller
             $bonus->card_number = $sogyms[$i]->card_number;
             $bonus->phone = $sogyms[$i]->phone;
             $bonus->pay_date = $sogyms[$i]->pay_date;
+            $bonus->bonus = $sogyms[$i]->bonus;
             $bonus->amount = $sogyms[$i]->amount;
             $bonus->status = $sogyms[$i]->status;
             $bonus->user_id = 2;
@@ -156,13 +157,17 @@ class ProductsController extends Controller
         return "pushed";
     }
 
-    public function addBonusAsia(Request $request) {
-        $bonuses = Bonus::get();
-        for($i=0; $i < count($bonuses); $i++) { 
-            $bonuses[$i]->user_id = 1;
-            $bonuses->save();
-        }
-        return "pushed";
+    public function updateAsia(Request $request) {
+        $bonuses = Bonus::where('user_id',null)->update([
+            'user_id'=>1
+        ]);
+
+        return Bonus::get();
+    }
+
+    public function deleteSogym(Request $request) {
+        $bonuses = Bonus::where('user_id',2)->delete();
+        return "deleted";
     }
 
     public function useBonus(Request $request) {

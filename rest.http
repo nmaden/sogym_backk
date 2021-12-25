@@ -1,22 +1,9 @@
-POST https://api.kenesmebel.kz/api/v1/fill/products
+GET http://127.0.0.1:8000/delete/sogym
 Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiNDRlY2YzMjY3Y2QyN2MwNzRlNWQ0NmIxZTdiZWY3NmJjODZkOTMwYjk0NzUzMmRhMjhkNWFhNjQ0ZDIwNTU1MTMwZjBlZDYyOTcxYTg1OTIiLCJpYXQiOiIxNjI3ODQwNTU2LjM5NzcyOCIsIm5iZiI6IjE2Mjc4NDA1NTYuMzk3NzM3IiwiZXhwIjoiMTY1OTM3NjU1Ni4zOTAyNjUiLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.NGXrlMGtzvN0-kWATL8-GEE3HeaLNR4ZJSfIaI-WYxeWBcWEZlh5iEAc1WVWrxFzoBVrCOG9BgOzlbgmWCr7j1e0qvKeo9EzzViNs-ZEmSY6y5rPbc2JRg0oK0R6k9Bsc9geBng3dM7t47fTiR8YEvtWbGGiWlSIU5xYn6UbJEDDDMD-ERCJ0puNgJUAqMr--oRqL6Htzbg1NytqIjAnA_641GW7KJ7GxOvg5BADe7lmL4pflxKVm5sZ0yow-HlhHfSnB8xufeB8lc87XR2wSFTBAMH7t6sCAsS2Y7mtgyu083WYoSeb3XRJ_FVwKVvtc7gqZ65THBKmN9NKrflN90cPquxYyZjTganCuDE12uPn6BBnau5QXibo-hRrCxP5vCZxb0ebEocRrA2NxC1it8ATljElE-2eHrVnkGrHTw3KzwMX7OIOXgHpH5LbiaVHN0gTcrRxoZJXGO_LTszJ1t3pAJjfu2-toMbAu7PRW8g6syzEBsWUgdfREjMHqzM-gmZyF6HBL0w08HlquxQU-EpocB7bjnERLuQJkcQgfR5I2BJi-6hV3bVUHqQPa9AQvPzc420H502pCJRftMAoLbkAp3XUvkFc1BBqhI55CRjvr8y425tQf3H-iyJ_iN9MwqSu5oj_RQhijWQDSvYdVA8uZnh0zE2FPApKF0eQ3rE
 
 {
-    "products": [
-        {
-            "name_product": "Divan",
-            "c_id": 1,
-            "article": "22",
-            "category_id": 1,
-            "price": 2000,
-            "count": 5,
-            "percent": 20,
-            "price_sale": 100
-        }
-    ]
+    
 }
-
 ###
 POST   http://127.0.0.1:8000/api/v1/login
 Content-Type: application/json
