@@ -33,15 +33,9 @@ class ProductsController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 422);
         }
-        if(Auth::user()->email=='sogym@gmail.com') {
-            $bonus = SogymBonus::where('id',$request->id)->first();
-            $bonus->status="deleted";
-            $bonus->save();
-        }else {
-            $bonus = SogymBonus::where('id',$request->id)->delete();
-            $bonus->status="deleted";
-            $bonus->save();
-        }
+        $bonus = Bonus::where('id',$request->id)->where('user_id',Auth::id())->first();
+        $bonus->status="deleted";
+        $bonus->save();
         return response()->json(['message' => "Успешно удалено"], 200);
     }
 
@@ -49,15 +43,14 @@ class ProductsController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'required'
         ]); 
-        $data = [
-            'phone'=>'+7707425290',
-            'text'=>'Hello world'
-        ];
+        // $data = [
+        //     'phone'=>'+7707425290',
+        //     'text'=>'Hello world'
+        // ];
         // \App\Jobs\MobizonJob::dispatch($data);
 
 
-        $bonus =  Auth::user()->email=='sogym@gmail.com'?SogymBonus::where('id',$request->id)->first():Bonus::where('id',$request->id)->first();
-      
+        $bonus = Bonus::where('id',$request->id)->where('user_id',Auth::id())->first();
         $bonus->name = $request->name;
         $bonus->card_number = $request->card_number;
         $bonus->phone = $request->phone;
@@ -77,21 +70,15 @@ class ProductsController extends Controller
             return response()->json(['error' => $validator->messages()], 422);
         }
 
-
-        $bonus =  Auth::id()==2?SogymBonus::where('phone',$request->phone)->first():Bonus::where('phone',$request->phone)->first();
+        $bonus = Bonus::where('phone',$request->phone)->where('user_id',Auth::id())->first();
         if($bonus) {
             return response()->json(['error' =>'Ползователь существует введите другой номер телефона'], 422); 
         }
-        $bonus =  Auth::id()==2?SogymBonus::where('card_number',$request->card_number)->first():Bonus::where('card_number',$request->card_number)->first();
+        $bonus =  Bonus::where('card_number',$request->card_number)->where('user_id',Auth::id())->first();
         if($bonus) {
             return response()->json(['error' =>'Ползователь существует'], 422); 
         }
-
-    
-     
-        $bonus = Auth::id()==2?new SogymBonus():new Bonus();
-
-        
+        $bonus = new Bonus();        
         $bonus->phone = $request->phone;
         $bonus->name = $request->name;
         $bonus->amount = $request->amount;
@@ -103,7 +90,7 @@ class ProductsController extends Controller
         return response()->json(['message' => "Успешно сохранен"], 200);
     }
     public function getBonuses() {
-        return   Auth::id()==2?SogymBonus::query()->get():Bonus::query()->get();
+        return  Bonus::query()->where("user_id",Auth::id())->get();
     }
     public function searchBonus(Request $request) {
         $validator = Validator::make($request->all(), [
@@ -113,23 +100,12 @@ class ProductsController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 422);
         }
-
-        if(Auth::user()->email=='sogym@gmail.com') {
-            $bonus = SogymBonus::
-            where('phone', 'like', '%' . $request->search . '%')
-            ->orWhere('card_number', 'like', '%' . $request->search . '%')
-            ->orWhere('name', 'like', '%' . $request->search . '%')
-            ->where('status',null)
-            ->get();
-         
-        }else {
-            $bonus = Bonus::where('phone', 'like', '%' . $request->search  . '%')
-            ->orWhere('card_number', 'like', '%' . $request->search . '%')
-            ->orWhere('name', 'like', '%' . $request->search . '%')
-            ->where('status',null)
-            ->get();
-          
-        }
+        $bonus = Bonus::where('phone', 'like', '%' . $request->search  . '%')
+        ->orWhere('card_number', 'like', '%' . $request->search . '%')
+        ->orWhere('name', 'like', '%' . $request->search . '%')
+        ->where('status',null)
+        ->where('user_id',Auth::id())
+        ->get();
         return $bonus;
     }
     public function addBonus(Request $request) {
@@ -141,39 +117,66 @@ class ProductsController extends Controller
             return response()->json(['error' => $validator->messages()], 422);
         }
 
-
-        if($request->card_number) {
-            $bonus =  Auth::id()==2?SogymBonus::where('card_number',$request->card_number)->first():Bonus::where('card_number',$request->card_number)->first();
-        }else {
-            $bonus =  Auth::id()==2?SogymBonus::where('phone',$request->phone)->first():Bonus::where('phone',$request->phone)->first();
+        if($request->phone!='') {
+            $bonus =  Bonus::where('phone',$request->phone)->where('user_id',Auth::id())->first();
         }
-        
-
+        else if($request->card_number!='') {
+            $bonus = Bonus::where('card_number',$request->card_number)->where('user_id',Auth::id())->first();
+        }
         $bonus->amount = $bonus->amount.' '.$request->amount;
-
         $bonus->pay_date = $bonus->pay_date.' '. Carbon::now();
 
-        $bonus->bonus =$bonus->bonus+ $request->amount*0.03;
+        $bonus->bonus =$bonus->bonus+ $request->amount*0.02;
         $bonus->save();
 
         return response()->json(['message' => "Успешно сохранен"], 200);
+    }
+
+
+
+    public function getUsers(Request $request) {
+        $users = User::get();
+        return $users;
+        
+    }
+
+    public function pushBonus(Request $request) {
+        $sogyms = SogymBonus::get();
+        for($i=0; $i < count($sogyms); $i++) { 
+            $bonus = new Bonus();
+            $bonus->name = $sogyms[$i]->name;
+            $bonus->card_number = $sogyms[$i]->card_number;
+            $bonus->phone = $sogyms[$i]->phone;
+            $bonus->pay_date = $sogyms[$i]->pay_date;
+            $bonus->amount = $sogyms[$i]->amount;
+            $bonus->status = $sogyms[$i]->status;
+            $bonus->user_id = 2;
+            $bonus->save();
+        }
+        return "pushed";
+    }
+
+    public function addBonusAsia(Request $request) {
+        $bonuses = Bonus::get();
+        for($i=0; $i < count($bonuses); $i++) { 
+            $bonuses[$i]->user_id = 1;
+            $bonuses->save();
+        }
+        return "pushed";
     }
 
     public function useBonus(Request $request) {
         if($request->phone=='' && $request->card_number=='' ) {
             return response()->json(['error' => 'Введите телефон или номер карты'], 422);
         }
-
         if($request->phone!='') {
-            $bonus =  Auth::id()==2?SogymBonus::where('phone',$request->phone)->first():Bonus::where('phone',$request->phone)->first();
+            $bonus =  Bonus::where('phone',$request->phone)->where('user_id',Auth::id())->first();
         }
         else if($request->card_number!='') {
-            $bonus =  Auth::id()==2?SogymBonus::where('card_number',$request->card_number)->first():Bonus::where('card_number',$request->card_number)->first();
+            $bonus = Bonus::where('card_number',$request->card_number)->where('user_id',Auth::id())->first();
         }
-       
         $bonus->bonus = 0;
         $bonus->save();
-
         return response()->json(['message' => "Бонус успешно потрачено"], 200);
     }
 
@@ -184,38 +187,20 @@ class ProductsController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 422);
         }
-        if(Auth::user()->email=='sogym@gmail.com') {
-            $bonus = SogymBonus::where('id',$request->id)->first();
-            return $bonus;
-        }else {
-            $bonus = Bonus::where('id',$request->id)->first();
-            return $bonus;
-        }
-
+        $bonus = Bonus::where('id',$request->id)->where('user_id',Auth::id())->first();
+        return $bonus;
     }
     public function getBonus(Request $request) {
         if($request->phone=='' && $request->card_number=='' ) {
             return response()->json(['error' => 'Введите телефон или номер карты'], 422);
         }
       
-
         if($request->phone!='') {
-            if(Auth::user()->email=='sogym@gmail.com') {
-                $bonus = SogymBonus::where('phone',$request->phone)->first();
-            
-            }else {
-                $bonus = Bonus::where('phone',$request->phone)->first();
-            }
+            $bonus = Bonus::where('phone',$request->phone)->where('user_id',Auth::id())->first();
         }
         if($request->card_number!='') {
-            if(Auth::user()->email=='sogym@gmail.com') {
-                $bonus = SogymBonus::where('card_number',$request->card_number)->first();
-            
-            }else {
-                $bonus = Bonus::where('card_number',$request->card_number)->first();
-            }
+            $bonus = Bonus::where('card_number',$request->card_number)->where('user_id',Auth::id())->first();
         }
-
 
         if($bonus) {
             return response()->json(['bonus' => $bonus->bonus==0 ||  !$bonus->bonus?'zero':$bonus->bonus], 200);
@@ -227,24 +212,18 @@ class ProductsController extends Controller
         if($request->phone=='' && $request->card_number=='' ) {
             return response()->json(['error' => 'Введите телефон или номер карты'], 422);
         }
-      
-     
         if($request->phone!='') {
-            $bonus =  Auth::id()==2? SogymBonus::where('phone',$request->phone)->first():Bonus::where('phone',$request->phone)->first();
+            $bonus = Bonus::where('phone',$request->phone)->where('user_id',Auth::id())->first();
         }
-        if($request->card_number) {
-            $bonus =  Auth::id()==2? SogymBonus::where('card_number',$request->card_number)->first():Bonus::where('card_number',$request->card_number)->first();
+        if($request->card_number!='') {
+            $bonus = Bonus::where('card_number',$request->card_number)->where('user_id',Auth::id())->first();
         }
-
-
         if($bonus) {
             return response()->json(['bonus' => $bonus->bonus==0 ||  !$bonus->bonus?'zero':$bonus->bonus], 200);
         }else {
             return response()->json(['message' => 'Не найдено'], 200);
         }
     }
-
-
 
     public function getInfo(Request $request) {
         if($request->id!='') {
