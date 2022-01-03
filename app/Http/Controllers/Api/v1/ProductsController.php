@@ -178,7 +178,7 @@ class ProductsController extends Controller
         $bonus->amount = $bonus->amount.' '.$request->amount;
         $bonus->pay_date = $bonus->pay_date.' '. Carbon::now();
 
-        $bonus->bonus =$bonus->bonus+ $request->amount*0.02;
+        $bonus->bonus =$bonus->bonus+ $request->amount*0.01;
         $bonus->save();
 
         return response()->json(['message' => "Успешно сохранен"], 200);
