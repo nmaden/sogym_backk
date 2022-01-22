@@ -83,7 +83,7 @@ class ProductsController extends Controller
         $bonus->name = $request->name;
         $bonus->amount = $request->amount;
         $bonus->card_number = $request->card_number;
-        $bonus->bonus =  Auth::id()==2?$request->amount*0.02:$request->amount*0.03;
+        $bonus->bonus =  Auth::id()==2?$request->amount*0.01:$request->amount*0.01;
         $bonus->pay_date = Carbon::now();
         $bonus->user_id = Auth::id();
 
