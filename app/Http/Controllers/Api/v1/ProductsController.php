@@ -16,11 +16,13 @@ use App\Models\ProductDuplicate;
 use App\Models\User;
 use App\Models\Banner;
 use App\Models\Bonus;
+use App\Models\BonusLog;
 use App\Models\SogymBonus;
 use App\Models\Information;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use File;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use NotificationChannels\Telegram\TelegramMessage;
 class ProductsController extends Controller
@@ -86,14 +88,25 @@ class ProductsController extends Controller
         $bonus->bonus =  Auth::id()==2?$request->amount*0.01:$request->amount*0.01;
         $bonus->pay_date = Carbon::now();
         $bonus->user_id = Auth::id();
-
-
         $bonus->save();
+        $this->createLog($request,$bonus->id);
+    
+
 
         return response()->json(['message' => "Успешно сохранен"], 200);
     }
     public function getBonuses() {
         return  Bonus::query()->where("user_id",Auth::id())->orderBy('created_at','DESC')->get();
+    }
+
+
+    public function createLog($request,$bonus_id) {
+        $bonusLog =  new BonusLog();
+        $bonusLog->date = now();
+        $bonusLog->price = $request->amount;
+        $bonusLog->bonus = $request->amount*0.01;
+        $bonusLog->bonus_id = $bonus_id;
+        $bonusLog->save();
     }
 
 
@@ -181,7 +194,16 @@ class ProductsController extends Controller
         $bonus->bonus =$bonus->bonus+ $request->amount*0.01;
         $bonus->save();
 
+        $this->createLog($request,$bonus->id);
+
         return response()->json(['message' => "Успешно сохранен"], 200);
+    }
+
+    public function yearBonus() {
+        $bonuses = DB::table('bonus_log')
+        ->select(DB::raw('SUM(bonus) as amount'),DB::raw('MONTH(created_at) as month'))->groupBy('month')->get();
+        $array= [0,0,0,0,0,0,0,0,0,0,0,0]; foreach($bonuses as $bonus){ $array[$bonus->month-1] = $bonus->amount;}
+        return $array;
     }
 
 

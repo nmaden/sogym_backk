@@ -270,14 +270,21 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpI
 
 
 ###
-POST  https://api.asia.frezerovka04.kz/api/v1/register
+POST  http://127.0.0.1:8000/api/v1/register
 Content-Type: application/json
 
 {
     "name": "Администратор системы",
-    "email": "Sarkulova1991@bk.ru",
-    "password": "Sarkulova1991"
+    "email": "sogym@gmail.com",
+    "password": "sogym"
 }
+
+
+###
+GET  http://127.0.0.1:8000/api/v1/guest/year/bonus
+Content-Type: application/json
+
+
 
 
 
