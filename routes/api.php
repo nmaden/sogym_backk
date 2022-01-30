@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     Route::middleware('auth:api')->group(function () {
     
-   
+    Route::get('/year/bonus', 'Api\v1\ProductsController@yearBonus');
+  
     Route::get('/get/bonus/by/id', 'Api\v1\ProductsController@getBonusById');
             Route::get('/get/auth/bonus', 'Api\v1\ProductsController@getBonusAuth');
 
@@ -143,7 +144,6 @@ Route::prefix('v1')->group(function () {
     Route::get('/get/hotels', 'Api\v1\ProductsController@getHotels');
 
     Route::get('/guest/get/info', 'Api\v1\ProductsController@getInfo');
-    Route::get('/guest/year/bonus', 'Api\v1\ProductsController@yearBonus');
   
 
     Route::post('/guest/create/info', 'Api\v1\ProductsController@createInfo');

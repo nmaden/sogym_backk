@@ -25,6 +25,9 @@ use File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use NotificationChannels\Telegram\TelegramMessage;
+
+use Carbon\CarbonPeriod;
+
 class ProductsController extends Controller
 {       
 
@@ -106,6 +109,16 @@ class ProductsController extends Controller
         $bonusLog->price = $request->amount;
         $bonusLog->bonus = $request->amount*0.01;
         $bonusLog->bonus_id = $bonus_id;
+        $bonusLog->user_id = Auth::id();
+        $bonusLog->save();
+    }
+    public function subLog($bonus) {
+        $bonusLog =  new BonusLog();
+        $bonusLog->date = now();
+        $bonusLog->price = 0;
+        $bonusLog->bonus = -$bonus->bonus;
+        $bonusLog->bonus_id = $bonus->id;
+        $bonusLog->user_id = Auth::id();
         $bonusLog->save();
     }
 
@@ -201,9 +214,30 @@ class ProductsController extends Controller
 
     public function yearBonus() {
         $bonuses = DB::table('bonus_log')
-        ->select(DB::raw('SUM(bonus) as amount'),DB::raw('MONTH(created_at) as month'))->groupBy('month')->get();
-        $array= [0,0,0,0,0,0,0,0,0,0,0,0]; foreach($bonuses as $bonus){ $array[$bonus->month-1] = $bonus->amount;}
-        return $array;
+        ->where('user_id',Auth::id())
+        ->where('created_at','>=',Carbon::now()->subYear())
+        ->where('created_at','<=',Carbon::now())
+        ->select(DB::raw('SUM(bonus) as amount'),DB::raw('DATE_FORMAT(created_at, "%m-%Y") as month'))->orderBy('month','DESC')->groupBy('month')->get();
+        
+        $range = [];
+        setlocale(LC_TIME, 'ru_RU.UTF-8');
+        foreach (CarbonPeriod::create(Carbon::now()->subYear(), '1 month', Carbon::today()) as $key=>$month)  {
+            if($bonuses->contains('month',$month->format('m-Y'))) {
+                
+                $range[$key]['month'] = $month->locale('ru')->isoFormat('MMMM YYYY');
+                $range[$key]['freq'] = 
+                $bonuses->filter(function($item) use($month){
+                    return $item->month == $month->format('m-Y');
+                })->first()->amount;
+
+            }else {
+                $range[$key]['month'] = $month->locale('ru')->isoFormat('MMMM YYYY');
+                $range[$key]['freq'] = 0;
+            }
+        }
+
+     
+        return array_reverse($range);
     }
 
 
@@ -254,6 +288,7 @@ class ProductsController extends Controller
         else if($request->card_number!='') {
             $bonus = Bonus::where('card_number',$request->card_number)->where('user_id',Auth::id())->first();
         }
+        $this->subLog($bonus);
         $bonus->bonus = 0;
         $bonus->save();
         return response()->json(['message' => "Бонус успешно потрачено"], 200);
