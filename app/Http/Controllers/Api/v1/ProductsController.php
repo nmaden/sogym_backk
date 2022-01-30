@@ -288,7 +288,7 @@ class ProductsController extends Controller
         else if($request->card_number!='') {
             $bonus = Bonus::where('card_number',$request->card_number)->where('user_id',Auth::id())->first();
         }
-        $this->subLog($bonus);
+        // $this->subLog($bonus);
         $bonus->bonus = 0;
         $bonus->save();
         return response()->json(['message' => "Бонус успешно потрачено"], 200);
