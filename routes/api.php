@@ -145,7 +145,8 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/guest/get/info', 'Api\v1\ProductsController@getInfo');
   
-
+    Route::get('/guest/year/bonus', 'Api\v1\ProductsController@yearBonus');
+  
     Route::post('/guest/create/info', 'Api\v1\ProductsController@createInfo');
 
     Route::get('/guest/get/spec', 'Api\v1\ProductsController@getSpec');

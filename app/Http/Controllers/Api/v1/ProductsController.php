@@ -221,7 +221,7 @@ class ProductsController extends Controller
         
         $range = [];
         setlocale(LC_TIME, 'ru_RU.UTF-8');
-        foreach (CarbonPeriod::create(Carbon::now()->subYear(), '1 month', Carbon::today()) as $key=>$month)  {
+        foreach (CarbonPeriod::create(Carbon::now()->subYear(), '1 month', Carbon::today()->addMonth()) as $key=>$month)  {
             if($bonuses->contains('month',$month->format('m-Y'))) {
                 
                 $range[$key]['month'] = $month->locale('ru')->isoFormat('MMMM YYYY');
