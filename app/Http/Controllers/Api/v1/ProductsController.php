@@ -279,17 +279,28 @@ class ProductsController extends Controller
     }
 
     public function useBonus(Request $request) {
+
+        $this->validate($request, [
+            'sub_amount' => 'required'
+        ]);
+
+    
         if($request->phone=='' && $request->card_number=='' ) {
             return response()->json(['error' => 'Введите телефон или номер карты'], 422);
         }
-        if($request->phone!='') {
+        else if($request->phone!='') {
             $bonus =  Bonus::where('phone',$request->phone)->where('user_id',Auth::id())->first();
         }
         else if($request->card_number!='') {
             $bonus = Bonus::where('card_number',$request->card_number)->where('user_id',Auth::id())->first();
         }
         // $this->subLog($bonus);
-        $bonus->bonus = 0;
+
+        else if($request->sub_amount > $bonus->bonus) {
+            return response()->json(['error' => 'Сумма привышает бонус'], 422);
+        }
+
+        $bonus->bonus = $bonus->bonus-$request->sub_amount;
         $bonus->save();
         return response()->json(['message' => "Бонус успешно потрачено"], 200);
     }
