@@ -290,15 +290,18 @@ class ProductsController extends Controller
         }
         else if($request->phone!='') {
             $bonus =  Bonus::where('phone',$request->phone)->where('user_id',Auth::id())->first();
+            if($request->sub_amount > $bonus->bonus) {
+                return response()->json(['error' => 'Сумма привышает бонус'], 422);
+            }
         }
         else if($request->card_number!='') {
             $bonus = Bonus::where('card_number',$request->card_number)->where('user_id',Auth::id())->first();
+            if($request->sub_amount > $bonus->bonus) {
+                return response()->json(['error' => 'Сумма привышает бонус'], 422);
+            }
         }
         // $this->subLog($bonus);
 
-        else if($request->sub_amount > $bonus->bonus) {
-            return response()->json(['error' => 'Сумма привышает бонус'], 422);
-        }
 
         $bonus->bonus = $bonus->bonus-$request->sub_amount;
         $bonus->save();
