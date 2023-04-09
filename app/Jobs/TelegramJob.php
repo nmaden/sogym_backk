@@ -36,10 +36,10 @@ class TelegramJob implements ShouldQueue
     {
 
         $message = $this->message;
-        $this->send_telegram(2014378443,$message); // ASIA
+        // $this->send_telegram(2014378443,$message); // ASIA
         $this->send_telegram(281900870,$message); // I
-        $this->send_telegram(546286304,$message); // Wygila
-        $this->send_telegram(2091260232,$message); // Nurbolat
+        // $this->send_telegram(546286304,$message); // Wygila
+        // $this->send_telegram(2091260232,$message); // Nurbolat
      
      
     }

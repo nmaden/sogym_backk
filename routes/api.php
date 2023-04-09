@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BonusController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,120 +18,119 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
     Route::middleware('auth:api')->group(function () {
-    
-    Route::get('/year/bonus', 'Api\v1\ProductsController@yearBonus');
-  
-    Route::get('/get/bonus/by/id', 'Api\v1\ProductsController@getBonusById');
-            Route::get('/get/auth/bonus', 'Api\v1\ProductsController@getBonusAuth');
+        
+        Route::resource('bonus', BonusController::class);
+ 
+        Route::get('/year/bonus', 'Api\v1\BonusController@yearBonus');
 
-            Route::get('/search/bonus', 'Api\v1\ProductsController@searchBonus');
-            
-          
-            Route::post('/update/bonus', 'Api\v1\ProductsController@updateBonus');
-            Route::post('/create/bonus', 'Api\v1\ProductsController@createBonus');
-            Route::post('/delete/bonus', 'Api\v1\ProductsController@deleteBonus');
-            Route::post('/add/bonus', 'Api\v1\ProductsController@addBonus');
-            Route::post('/use/bonus', 'Api\v1\ProductsController@useBonus');
-            Route::get('/get/bonuses', 'Api\v1\ProductsController@getBonuses');
+        Route::get('/get/bonus/by/id', 'Api\v1\BonusController@getBonusById');
+        Route::get('/get/auth/bonus', 'Api\v1\BonusController@getBonusAuth');
 
-            Route::post('/create/info', 'Api\v1\ProductsController@createInfo');
-            Route::post('/update/info', 'Api\v1\ProductsController@editInfo');
-            Route::get('/get/info', 'Api\v1\ProductsController@getInfo');
+        Route::get('/search/bonus', 'Api\v1\BonusController@searchBonus');
+        Route::post('/update/bonus', 'Api\v1\BonusController@updateBonus');
+        Route::post('/create/bonus', 'Api\v1\BonusController@createBonus');
+        Route::post('/delete/bonus', 'Api\v1\BonusController@deleteBonus');
+        Route::post('/add/bonus', 'Api\v1\BonusController@addBonus');
+        Route::post('/use/bonus', 'Api\v1\BonusController@useBonus');
+        Route::get('/get/bonuses', 'Api\v1\BonusController@getBonuses');
 
-
-
-            Route::post('/create/product', 'Api\v1\ProductsController@createProduct');
-            Route::post('/get/product', 'Api\v1\ProductsController@getProduct');
-            Route::get('/get/products', 'Api\v1\ProductsController@getProducts');
-            Route::post('/get/products/admin/by/category', 'Api\v1\ProductsController@getProductsAdminByCategory');
-
-            Route::post('/create/banner', 'Api\v1\ProductsController@createBanner');
-            Route::post('/del/banner', 'Api\v1\ProductsController@deleteBanner');
-
-            Route::get('/get/admin/products', 'Api\v1\ProductsController@getAdminProducts');
-
-            Route::post('/set/category', 'Api\v1\ProductsController@setCategory');
-
-            Route::post('/set/show/product', 'Api\v1\ProductsController@setShowProduct');
-
-            Route::post('/find/product', 'Api\v1\ProductsController@findProduct');
-
-
-            Route::post('/update/category', 'Api\v1\ProductsController@updateCategory');
-            Route::get('/delete/category', 'Api\v1\ProductsController@deleteCategory');
-            Route::post('/create/category', 'Api\v1\ProductsController@createCategory');
-
-
-            Route::get('/delete/product/admin', 'Api\v1\ProductsController@deleteProductAdmin');
-
-
-            Route::post('/delete/product', 'Api\v1\ProductsController@deleteProductAdmin');
-
-            Route::post('/delete/product/duplicate', 'Api\v1\ProductsController@deleteProductDuplicate');
+        Route::post('/create/info', 'Api\v1\ProductsController@createInfo');
+        Route::post('/update/info', 'Api\v1\ProductsController@editInfo');
+        Route::get('/get/info', 'Api\v1\ProductsController@getInfo');
 
 
 
-            Route::get('/delete/product/image', 'Api\v1\ProductsController@deleteProductImage');
-            Route::post('/update/product', 'Api\v1\ProductsController@updateProduct');
+        Route::post('/create/product', 'Api\v1\ProductsController@createProduct');
+        Route::post('/get/product', 'Api\v1\ProductsController@getProduct');
+        Route::get('/get/products', 'Api\v1\ProductsController@getProducts');
+        Route::post('/get/products/admin/by/category', 'Api\v1\ProductsController@getProductsAdminByCategory');
+
+        Route::post('/create/banner', 'Api\v1\ProductsController@createBanner');
+        Route::post('/del/banner', 'Api\v1\ProductsController@deleteBanner');
+
+        Route::get('/get/admin/products', 'Api\v1\ProductsController@getAdminProducts');
+
+        Route::post('/set/category', 'Api\v1\ProductsController@setCategory');
+
+        Route::post('/set/show/product', 'Api\v1\ProductsController@setShowProduct');
+
+        Route::post('/find/product', 'Api\v1\ProductsController@findProduct');
 
 
-            Route::get('/get/order', 'Api\v1\ProductsController@getOrder');
-            Route::get('/get/orders/list', 'Api\v1\ProductsController@getOrders');
-
-            Route::post('/delete/order', 'Api\v1\ProductsController@deleteOrder');
-
-            Route::post('/delete/all/order', 'Api\v1\ProductsController@deleteAllOrder');
+        Route::post('/update/category', 'Api\v1\ProductsController@updateCategory');
+        Route::get('/delete/category', 'Api\v1\ProductsController@deleteCategory');
+        Route::post('/create/category', 'Api\v1\ProductsController@createCategory');
 
 
-
-            Route::get('/get/orders', 'Api\v1\ProductsController@senderOrdersForC');
-            Route::post('/update/to/sended', 'Api\v1\ProductsController@updateSended');
+        Route::get('/delete/product/admin', 'Api\v1\ProductsController@deleteProductAdmin');
 
 
-            Route::post('/update/count', 'Api\v1\ProductsController@updateCount');
+        Route::post('/delete/product', 'Api\v1\ProductsController@deleteProductAdmin');
 
-            Route::post('/update/product/action/c', 'Api\v1\ProductsController@updateActionC');
+        Route::post('/delete/product/duplicate', 'Api\v1\ProductsController@deleteProductDuplicate');
+
+
+
+        Route::get('/delete/product/image', 'Api\v1\ProductsController@deleteProductImage');
+        Route::post('/update/product', 'Api\v1\ProductsController@updateProduct');
+
+
+        Route::get('/get/order', 'Api\v1\ProductsController@getOrder');
+        Route::get('/get/orders/list', 'Api\v1\ProductsController@getOrders');
+
+        Route::post('/delete/order', 'Api\v1\ProductsController@deleteOrder');
+
+        Route::post('/delete/all/order', 'Api\v1\ProductsController@deleteAllOrder');
+
+
+
+        Route::get('/get/orders', 'Api\v1\ProductsController@senderOrdersForC');
+        Route::post('/update/to/sended', 'Api\v1\ProductsController@updateSended');
+
+
+        Route::post('/update/count', 'Api\v1\ProductsController@updateCount');
+
+        Route::post('/update/product/action/c', 'Api\v1\ProductsController@updateActionC');
 
 
 
         Route::post('/create/purchase', 'Api\v1\PurchaseController@createPurchase');
-            Route::get('/get/applications', 'Api\v1\PurchaseController@getApplications');
-            Route::post('/accept/application', 'Api\v1\PurchaseController@acceptApplication');
-            
+        Route::get('/get/applications', 'Api\v1\PurchaseController@getApplications');
+        Route::post('/accept/application', 'Api\v1\PurchaseController@acceptApplication');
 
 
 
-            Route::post('/get/user/me', 'Api\v1\ProductsController@me');
+
+        Route::post('/get/user/me', 'Api\v1\ProductsController@me');
 
 
-            // Route::get('/get/user/me', 'Api\v1\ProductsController@me');
-            
-            
+        // Route::get('/get/user/me', 'Api\v1\ProductsController@me');
 
-            Route::get('/get/purchase', 'Api\v1\PurchaseController@getPurchase');
-            Route::get('/delete/purchase', 'Api\v1\PurchaseController@deletePurchase');
 
-            Route::get('/delete/application', 'Api\v1\PurchaseController@deleteApplication');
-            Route::post('/update/purchase', 'Api\v1\PurchaseController@updatePurchase');
-            Route::post('/fill/products', 'Api\v1\ProductsController@fillProduct');
-            Route::post('/delete/all/products', 'Api\v1\ProductsController@deleteDuplicateProducts');
 
-            Route::get('/update/two', 'Api\v1\ProductsController@updateByIdTwo');
+        Route::get('/get/purchase', 'Api\v1\PurchaseController@getPurchase');
+        Route::get('/delete/purchase', 'Api\v1\PurchaseController@deletePurchase');
 
+        Route::get('/delete/application', 'Api\v1\PurchaseController@deleteApplication');
+        Route::post('/update/purchase', 'Api\v1\PurchaseController@updatePurchase');
+        Route::post('/fill/products', 'Api\v1\ProductsController@fillProduct');
+        Route::post('/delete/all/products', 'Api\v1\ProductsController@deleteDuplicateProducts');
+
+        Route::get('/update/two', 'Api\v1\ProductsController@updateByIdTwo');
     });
 
 
 
 
     Route::get('/get/bonuses/null', 'Api\v1\ProductsController@getBonusesNull');
-   
+
     Route::get('/push/bonus', 'Api\v1\ProductsController@pushBonus');
     Route::get('/get/users', 'Api\v1\ProductsController@getUsers');
     Route::get('/delete/sogym', 'Api\v1\ProductsController@deleteSogym');
 
     Route::get('/update/asia', 'Api\v1\ProductsController@updateAsia');
 
-    
+
     Route::get('/get/asia/bonuses', 'Api\v1\ProductsController@getAsiaBonus');
 
 
@@ -144,9 +144,9 @@ Route::prefix('v1')->group(function () {
     Route::get('/get/hotels', 'Api\v1\ProductsController@getHotels');
 
     Route::get('/guest/get/info', 'Api\v1\ProductsController@getInfo');
-  
-    Route::get('/guest/year/bonus', 'Api\v1\ProductsController@yearBonus');
-  
+
+    Route::get('/guest/year/bonus', 'Api\v1\BonusController@yearBonus');
+
     Route::post('/guest/create/info', 'Api\v1\ProductsController@createInfo');
 
     Route::get('/guest/get/spec', 'Api\v1\ProductsController@getSpec');
@@ -180,6 +180,4 @@ Route::prefix('v1')->group(function () {
     Route::post('/login', 'Api\v1\AuthController@login');
 
     Route::post('/update/password', 'Api\v1\AuthController@updatePassword');
-
 });
-

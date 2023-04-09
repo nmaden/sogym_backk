@@ -30,329 +30,6 @@ use Carbon\CarbonPeriod;
 
 class ProductsController extends Controller
 {       
-
-    public function deleteBonus(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required'
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 422);
-        }
-        $bonus = Bonus::where('id',$request->id)->where('user_id',Auth::id())->first();
-        $bonus->status="deleted";
-        $bonus->save();
-        return response()->json(['message' => "Успешно удалено"], 200);
-    }
-
-    public function updateBonus(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required'
-        ]); 
-        // $data = [
-        //     'phone'=>'+7707425290',
-        //     'text'=>'Hello world'
-        // ];
-        // \App\Jobs\MobizonJob::dispatch($data);
-
-
-        $bonus = Bonus::where('id',$request->id)->where('user_id',Auth::id())->first();
-        $bonus->name = $request->name;
-        $bonus->card_number = $request->card_number;
-        $bonus->phone = $request->phone;
-        $bonus->save();
-
-        return response()->json(['message' => "Успешно сохранен"], 200);
-    }
-    public function createBonus(Request $request) {
-
-        $validator = Validator::make($request->all(), [
-            'phone' => 'required',
-            'name' => 'required',
-            'amount' => 'required',
-            // 'card_number' => 'required'
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 422);
-        }
-
-        $bonus = Bonus::where('phone',$request->phone)->where('user_id',Auth::id())->first();
-        if($bonus) {
-            return response()->json(['error' =>'Ползователь существует введите другой номер телефона'], 422); 
-        }
-        $bonus =  Bonus::where('card_number',$request->card_number)->where('user_id',Auth::id())->first();
-        if($bonus) {
-            return response()->json(['error' =>'Ползователь существует'], 422); 
-        }
-        $bonus = new Bonus();        
-        $bonus->phone = $request->phone;
-        $bonus->name = $request->name;
-        $bonus->amount = $request->amount;
-        $bonus->card_number = $request->card_number;
-        $bonus->bonus =  Auth::id()==2?$request->amount*0.01:$request->amount*0.01;
-        $bonus->pay_date = Carbon::now();
-        $bonus->user_id = Auth::id();
-        $bonus->save();
-        $this->createLog($request,$bonus->id);
-    
-
-
-        return response()->json(['message' => "Успешно сохранен"], 200);
-    }
-    public function getBonuses() {
-        return  Bonus::query()->where("user_id",Auth::id())->orderBy('created_at','DESC')->get();
-    }
-
-
-    public function createLog($request,$bonus_id) {
-        $bonusLog =  new BonusLog();
-        $bonusLog->date = now();
-        $bonusLog->price = $request->amount;
-        $bonusLog->bonus = $request->amount*0.01;
-        $bonusLog->bonus_id = $bonus_id;
-        $bonusLog->user_id = Auth::id();
-        $bonusLog->save();
-    }
-    public function subLog($bonus) {
-        $bonusLog =  new BonusLog();
-        $bonusLog->date = now();
-        $bonusLog->price = 0;
-        $bonusLog->bonus = -$bonus->bonus;
-        $bonusLog->bonus_id = $bonus->id;
-        $bonusLog->user_id = Auth::id();
-        $bonusLog->save();
-    }
-
-
-    public function getBonusesNull() {
-        return  Bonus::query()->where("user_id",null)->get();
-        
-    }
-
-    public function updateByIdTwo() {
-        Bonus::
-        where('id',162)
-        ->
-        update([
-            'user_id'=>Auth::id()
-        ]);
-        Bonus::
-        where('id',163)
-        ->delete();
-
-        Bonus::
-        where('id',164)
-        ->
-        update([
-            'user_id'=>Auth::id()
-        ]);
-        Bonus::
-        where('id',165)
-        ->
-        update([
-            'user_id'=>Auth::id()
-        ]);
-        Bonus::
-        where('id',166)
-        ->
-        update([
-            'user_id'=>Auth::id()
-        ]);
-        Bonus::
-        where('id',167)
-        ->
-        update([
-            'user_id'=>Auth::id()
-        ]);
-        Bonus::
-        where('id',168)
-        ->delete();
-        return "changed";
-    }
-
-
-    public function searchBonus(Request $request) {
-        $validator = Validator::make($request->all(), [
-            // 'phone' => 'required',
-            'search' => 'required'
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 422);
-        }
-        $bonus = Bonus::where('phone', 'like', '%' . $request->search  . '%')
-        ->orWhere('card_number', 'like', '%' . $request->search . '%')
-        ->orWhere('name', 'like', '%' . $request->search . '%')
-        ->where('status',null)
-        ->where('user_id',Auth::id())
-        ->get();
-        return $bonus;
-    }
-    public function addBonus(Request $request) {
-        $validator = Validator::make($request->all(), [
-            // 'phone' => 'required',
-            'amount' => 'required'
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 422);
-        }
-
-        if($request->phone!='') {
-            $bonus =  Bonus::where('phone',$request->phone)->where('user_id',Auth::id())->first();
-        }
-        else if($request->card_number!='') {
-            $bonus = Bonus::where('card_number',$request->card_number)->where('user_id',Auth::id())->first();
-        }
-        $bonus->amount = $bonus->amount.' '.$request->amount;
-        $bonus->pay_date = $bonus->pay_date.' '. Carbon::now();
-
-        $bonus->bonus =$bonus->bonus+ $request->amount*0.01;
-        $bonus->save();
-
-        $this->createLog($request,$bonus->id);
-
-        return response()->json(['message' => "Успешно сохранен"], 200);
-    }
-
-    public function yearBonus() {
-        $bonuses = DB::table('bonus_log')
-        ->where('user_id',Auth::id())
-        ->where('created_at','>=',Carbon::now()->subYear())
-        ->where('created_at','<=',Carbon::now())
-        ->select(DB::raw('SUM(bonus) as amount'),DB::raw('DATE_FORMAT(created_at, "%m-%Y") as month'))->orderBy('month','DESC')->groupBy('month')->get();
-        
-        $range = [];
-        setlocale(LC_TIME, 'ru_RU.UTF-8');
-        foreach (CarbonPeriod::create(Carbon::now()->subYear(), '1 month', Carbon::today()->addMonth()) as $key=>$month)  {
-            if($bonuses->contains('month',$month->format('m-Y'))) {
-                
-                $range[$key]['month'] = $month->locale('ru')->isoFormat('MMMM YYYY');
-                $range[$key]['freq'] = 
-                $bonuses->filter(function($item) use($month){
-                    return $item->month == $month->format('m-Y');
-                })->first()->amount;
-
-            }else {
-                $range[$key]['month'] = $month->locale('ru')->isoFormat('MMMM YYYY');
-                $range[$key]['freq'] = 0;
-            }
-        }
-
-     
-        return array_reverse($range);
-    }
-
-
-
-    public function getUsers(Request $request) {
-        $users = User::get();
-        return $users;
-        
-    }
-
-    public function pushBonus(Request $request) {
-        $sogyms = SogymBonus::get();
-        for($i=0; $i < count($sogyms); $i++) { 
-            $bonus = new Bonus();
-            $bonus->name = $sogyms[$i]->name;
-            $bonus->card_number = $sogyms[$i]->card_number;
-            $bonus->phone = $sogyms[$i]->phone;
-            $bonus->pay_date = $sogyms[$i]->pay_date;
-            $bonus->bonus = $sogyms[$i]->bonus;
-            $bonus->amount = $sogyms[$i]->amount;
-            $bonus->status = $sogyms[$i]->status;
-            $bonus->user_id = 2;
-            $bonus->save();
-        }
-        return "pushed";
-    }
-
-    public function updateAsia(Request $request) {
-        $bonuses = Bonus::where('user_id',null)->update([
-            'user_id'=>1
-        ]);
-
-        return Bonus::get();
-    }
-
-    public function deleteSogym(Request $request) {
-        $bonuses = Bonus::where('user_id',2)->delete();
-        return "deleted";
-    }
-
-    public function useBonus(Request $request) {
-
-        $this->validate($request, [
-            'sub_amount' => 'required'
-        ]);
-
-    
-        if($request->phone=='' && $request->card_number=='' ) {
-            return response()->json(['error' => 'Введите телефон или номер карты'], 422);
-        }
-        else if($request->phone!='') {
-            $bonus =  Bonus::where('phone',$request->phone)->where('user_id',Auth::id())->first();
-            if($request->sub_amount > $bonus->bonus) {
-                return response()->json(['error' => 'Сумма привышает бонус'], 422);
-            }
-        }
-        else if($request->card_number!='') {
-            $bonus = Bonus::where('card_number',$request->card_number)->where('user_id',Auth::id())->first();
-            if($request->sub_amount > $bonus->bonus) {
-                return response()->json(['error' => 'Сумма привышает бонус'], 422);
-            }
-        }
-        // $this->subLog($bonus);
-
-
-        $bonus->bonus = $bonus->bonus-$request->sub_amount;
-        $bonus->save();
-        return response()->json(['message' => "Бонус успешно потрачено"], 200);
-    }
-
-    public function getBonusById(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required'
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 422);
-        }
-        $bonus = Bonus::where('id',$request->id)->where('user_id',Auth::id())->first();
-        return $bonus;
-    }
-    public function getBonus(Request $request) {
-        if($request->phone=='' && $request->card_number=='' ) {
-            return response()->json(['error' => 'Введите телефон или номер карты'], 422);
-        }
-      
-        if($request->phone!='') {
-            $bonus = Bonus::where('phone',$request->phone)->where('user_id',Auth::id())->first();
-        }
-        if($request->card_number!='') {
-            $bonus = Bonus::where('card_number',$request->card_number)->where('user_id',Auth::id())->first();
-        }
-
-        if($bonus) {
-            return response()->json(['bonus' => $bonus->bonus==0 ||  !$bonus->bonus?'zero':$bonus->bonus], 200);
-        }else {
-            return response()->json(['message' => 'Не найдено'], 200);
-        }
-    }
-    public function getBonusAuth(Request $request) {
-        if($request->phone=='' && $request->card_number=='' ) {
-            return response()->json(['error' => 'Введите телефон или номер карты'], 422);
-        }
-        if($request->phone!='') {
-            $bonus = Bonus::where('phone',$request->phone)->where('user_id',Auth::id())->first();
-        }
-        if($request->card_number!='') {
-            $bonus = Bonus::where('card_number',$request->card_number)->where('user_id',Auth::id())->first();
-        }
-        if($bonus) {
-            return response()->json(['bonus' => $bonus->bonus==0 ||  !$bonus->bonus?'zero':$bonus->bonus], 200);
-        }else {
-            return response()->json(['message' => 'Не найдено'], 200);
-        }
-    }
-
     public function getInfo(Request $request) {
         if($request->id!='') {
             $informations =  Information::where('id',$request->id)->get();
@@ -645,6 +322,7 @@ class ProductsController extends Controller
         $product->description = $request->description;
         $product->price = $request->price;
         $product->count = $request->count;
+        $product->start_weight = $request->start_weight;
         $product->price_sale = $request->price_sale;
         // $product->add_size = $request->size;
         $product->category_id = $request->category_id;
@@ -695,6 +373,7 @@ class ProductsController extends Controller
         $product->sale = $request->sale;
         $product->new = $request->new;
         $product->top = $request->top;
+        $product->start_weight = $request->start_weight;
         $product->count_type = $request->count_type;
         $product->article = $request->article;
         $product->save();
@@ -702,19 +381,21 @@ class ProductsController extends Controller
       
         $files = $request->file('images');
 
-
-        foreach($files as $file) {
-            $product_image = new ProductImage();
-
-            $extension = $file->getClientOriginalExtension();
-            $path = 'storage/products/' . date('d') . '.' . date('m') . '.' . date('Y') . '/';
-            $b = 'product-' . Str::random(20). '.' . $extension;
-            $file->move($path, $b);
-
-            $product_image->product_id = $product->id;
-            $product_image->image_path = '/' . $path . $b;
-            $product_image->save();
+        if ($files) {
+            foreach($files as $file) {
+                $product_image = new ProductImage();
+    
+                $extension = $file->getClientOriginalExtension();
+                $path = 'storage/products/' . date('d') . '.' . date('m') . '.' . date('Y') . '/';
+                $b = 'product-' . Str::random(20). '.' . $extension;
+                $file->move($path, $b);
+    
+                $product_image->product_id = $product->id;
+                $product_image->image_path = '/' . $path . $b;
+                $product_image->save();
+            }
         }
+         
 
         return response()->json(['message' => "Успешно сохранен"], 200);
     }
