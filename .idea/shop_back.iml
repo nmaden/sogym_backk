@@ -136,11 +136,13 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/fideloper/proxy" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/fruitcake/laravel-cors" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel-notification-channels/telegram" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mobizon/mobizon-php" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="online_shop" />
     <orderEntry type="module" module-name="eqonaq2spa" />
     <orderEntry type="module" module-name="eqonaq-front" />
+    <orderEntry type="module" module-name="asia" />
   </component>
 </module>

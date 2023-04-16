@@ -29,7 +29,7 @@ use NotificationChannels\Telegram\TelegramMessage;
 use Carbon\CarbonPeriod;
 
 class ProductsController extends Controller
-{       
+{
     public function getInfo(Request $request) {
         if($request->id!='') {
             $informations =  Information::where('id',$request->id)->get();
@@ -171,8 +171,8 @@ class ProductsController extends Controller
         //     $category->p_id = $request->p_id;
         // }
 
-     
-   
+
+
         if ($request->hasFile('image')) {
             if($category->image_path!='' && file_exists(public_path($category->image_path))){
                 unlink(public_path($category->image_path));
@@ -181,10 +181,10 @@ class ProductsController extends Controller
             $path = 'storage/categories/';
             $name= 'category-' . time().'.'.$image->getClientOriginalExtension();
             $image->move($path, $name);
-            $category->image_path = '/' . $path . $name;    
+            $category->image_path = '/' . $path . $name;
         }
 
-        
+
         $category->save();
         return response()->json(['message' => "Успешно отредактирован"], 200);
     }
@@ -257,7 +257,7 @@ class ProductsController extends Controller
             $path = 'storage/categories/';
             $name= 'category-' . time().'.'.$image->getClientOriginalExtension();
             $image->move($path, $name);
-            $category->image_path = '/' . $path . $name;    
+            $category->image_path = '/' . $path . $name;
         }
         $category->save();
         return response()->json(['message' => "Успешно сохранен"], 200);
@@ -316,7 +316,7 @@ class ProductsController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 422);
         }
-        
+
         $product = Product::query()->where("id",$request->id)->first();
         $product->name = $request->name;
         $product->description = $request->description;
@@ -332,7 +332,7 @@ class ProductsController extends Controller
         $product->count_type = $request->count_type;
         $product->save();
 
-     
+
 
         $files = $request->file('images');
 
@@ -378,24 +378,24 @@ class ProductsController extends Controller
         $product->article = $request->article;
         $product->save();
 
-      
+
         $files = $request->file('images');
 
         if ($files) {
             foreach($files as $file) {
                 $product_image = new ProductImage();
-    
+
                 $extension = $file->getClientOriginalExtension();
                 $path = 'storage/products/' . date('d') . '.' . date('m') . '.' . date('Y') . '/';
                 $b = 'product-' . Str::random(20). '.' . $extension;
                 $file->move($path, $b);
-    
+
                 $product_image->product_id = $product->id;
                 $product_image->image_path = '/' . $path . $b;
                 $product_image->save();
             }
         }
-         
+
 
         return response()->json(['message' => "Успешно сохранен"], 200);
     }
@@ -415,8 +415,6 @@ class ProductsController extends Controller
         return response()->json(['message' => "Успешно сохранен"], 200);
     }
     public function getProductDescription(Request $request) {
-
-//        where("category_id",$request->category_id)->
         $description =  Product::query()->where("id",$request->product_id)->with("images")->first();
         return $description;
     }
@@ -426,7 +424,7 @@ class ProductsController extends Controller
             ->where('count','!=',0);
         if($request->category_id) {
             $products = $products->where('category_id',$request->category_id);
-        }            
+        }
         return $products->paginate(10);
     }
     public function getAdminProducts(Request $request) {
@@ -438,6 +436,7 @@ class ProductsController extends Controller
     public function getProductsByCategory(Request $request) {
         $products =  Product::query()
         ->with("images");
+
         if($request->category_id) {
             $products->where('category_id',$request->category_id);
         }
@@ -459,7 +458,9 @@ class ProductsController extends Controller
         if($request->priceTo) {
             $products->where('price','<=',$request->priceTo);
         }
-        return $products->paginate(8);
+
+        $page = $request->page ? $request->page : 10;
+        return $products->paginate($page);
     }
     public  function findProduct(Request $request) {
         $validator = Validator::make($request->all(), [
@@ -641,7 +642,7 @@ class ProductsController extends Controller
         //  $this->send_telegram(1061025347,$message); // Aigerim
 
 
-        
+
 
 
         //   $this->send_telegram(891800093,$message); // Wamwi

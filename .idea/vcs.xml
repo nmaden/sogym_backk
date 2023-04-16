@@ -4,5 +4,6 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$USER_HOME$/Desktop/DEV/eqonaq-front" vcs="Git" />
     <mapping directory="$USER_HOME$/Desktop/DEV/eqonaq_cabinet" vcs="Git" />
+    <mapping directory="$USER_HOME$/Desktop/dev/asia" vcs="Git" />
   </component>
 </project>
