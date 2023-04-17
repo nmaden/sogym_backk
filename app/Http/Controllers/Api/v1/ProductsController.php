@@ -458,9 +458,7 @@ class ProductsController extends Controller
         if($request->priceTo) {
             $products->where('price','<=',$request->priceTo);
         }
-
-        $page = $request->page ? $request->page : 10;
-        return $products->paginate($page);
+        return $products->paginate(8);
     }
     public  function findProduct(Request $request) {
         $validator = Validator::make($request->all(), [
